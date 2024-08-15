@@ -1,0 +1,16 @@
+:root {
+  /* APP COLORS LIGHT */
+  --clr-bg: #EEEEEE;
+  --clr-black: #121212;
+  --clr-gary: #757575;
+  --clr-white: #ffffff;
+  --clr-blue: #3a82ee;
+  --clr-red: #ef4444;
+  --clr-green: #22c55e;
+  --clr-red-hover: #b91c1c;
+  --clr-blue-hover: #1d4ed8;
+  --clr-green-hover: #15803d;
+
+  /* SHADOW */
+  --shadow: 0px 0px 8px rgba(55, 53, 53, 0.1);
+}

@@ -1,0 +1,114 @@
+<template>
+  <div class="multi-steps-page">
+    <form>
+      <div class="current-step">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+      </div>
+      <!-- STEPS -->
+      <div class="steps">
+        <!-- STEP ONE -->
+        <div class="step">
+          <div>
+            <p class="err-mess"></p>
+            <div class="custom-input">
+              <input
+                type="text"
+                placeholder="First name"
+                id="first-name"
+              >
+              <label for="first-name">First name</label>
+            </div>
+          </div>
+          <div>
+            <div class="custom-input">
+              <input
+                type="text"
+                placeholder="Last name"
+                id="last-name"
+              >
+              <label for="last-name">Last name</label>
+            </div>
+            <p class="err-mess"></p>
+          </div>
+        </div>
+        <!-- STEP TWO -->
+        <div class="step">
+          <div>
+            <p class="err-mess"></p>
+            <div class="custom-input">
+              <input
+                type="password"
+                placeholder="Password"
+                id="password"
+              >
+              <label for="password">Password</label>
+              <button
+                class="circle-btn show-pass"
+                type="button"
+              >
+                <i data-icon="eye-off"></i>
+                <i
+                  data-icon="eye"
+                  style="display: none;"
+                ></i>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="custom-input">
+              <input
+                type="password"
+                placeholder="Confirm password"
+                id="confirm-password"
+              >
+              <label for="confirm-password">Confirm password</label>
+            </div>
+            <p class="err-mess"></p>
+          </div>
+        </div>
+        <!-- STEP THREE -->
+        <div class="step">
+          <button
+            class="upload-img"
+            type="button"
+          >
+            <i
+              data-icon="user"
+              data-size="100%"
+              data-stroke="1"
+            ></i>
+            <div>
+              <p>image allowed png, jpg, jpeg</p>
+              <i
+                data-icon="upload"
+                data-size="50px"
+                data-stroke="1.5"
+              ></i>
+            </div>
+          </button>
+        </div>
+      </div>
+      <!-- MULTI STEPS ACTIONS -->
+      <div class="actions">
+        <button
+          class="btn btn-blue prev"
+          type="button"
+        >Prev</button>
+        <button
+          class="btn btn-blue next"
+          type="button"
+        ></button>
+      </div>
+    </form>
+  </div>
+  <link
+    rel="stylesheet"
+    href="../style/multi-steps-form.css"
+  >
+  <script
+    type="module"
+    src="../script/pagesFunc/multi-steps-form.js"
+  ></script>
+</template>

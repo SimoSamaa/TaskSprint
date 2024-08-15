@@ -1,0 +1,13 @@
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.login-page form {
+  border-radius: .5rem;
+  padding: 1rem;
+  background-color: var(--clr-white);
+  width: min(400px, 90%);
+  box-shadow: var(--shadow);
+}
