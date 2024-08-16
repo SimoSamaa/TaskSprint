@@ -10,4 +10,20 @@
   background-color: var(--clr-white);
   width: min(400px, 90%);
   box-shadow: var(--shadow);
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+
+  .login-pic {
+    overflow: hidden;
+    border-radius: .5rem;
+    background-color: var(--clr-bg);
+
+    img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 2/2;
+      object-fit: cover;
+    }
+  }
 }

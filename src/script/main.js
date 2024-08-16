@@ -1,8 +1,18 @@
 import '../style/main-style.css';
 
-let isAuth = false;
+export function checkSignup() {
+  return Boolean(localStorage['user']);
+}
 
 export function checkAuth() {
-  isAuth = Boolean(localStorage.getItem('user'));
-  return isAuth;
+  return Boolean(sessionStorage.getItem('isAuth'));
 }
+
+export function loadUserData() {
+  if (localStorage.getItem('user')) {
+    return JSON.parse(localStorage['user']);
+  } else {
+    return {};
+  }
+}
+

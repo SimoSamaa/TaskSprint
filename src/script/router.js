@@ -1,11 +1,16 @@
-import { checkAuth as isAuth } from './main';
+import { checkSignup as isSignup, checkAuth as isAuth } from './main';
 
-// Listen for the custom event to update the auth status
-document.addEventListener('authStatusChanged', () => {
-  console.log('Auth status changed:', isAuth());
+// Listen for the custom event to update the auth status;
+document.addEventListener('SignupChanged', () => {
+  console.log('signup:', isSignup());
 });
+console.log('signup-2:', isSignup());
 
-console.log('Initial auth status:', isAuth());
+document.addEventListener('AuthChanged', () => {
+  console.log('isAuth:', isAuth());
+});
+console.log('isAuth-2:', isAuth());
+
 
 const routeModules = {
   '/': () => import('./pagesFunc/multi-steps-form'),
@@ -36,19 +41,21 @@ function route(event) {
   if (href === window.location.href) return;
   handleLocation();
 }
-
+let a = false;
 async function handleLocation() {
   let path = window.location.pathname;
   const route = routes[path] || routes[404];
 
-  if (path === '/' && isAuth()) {
-    path = '/dashboard';
-    window.history.replaceState({}, '', path);
-  } else if (path === '/dashboard' && !isAuth()) {
-    // Redirect unauthenticated users from dashboard.html to index.html
-    path = '/';
-    window.history.replaceState({}, '', path);
-  }
+  // if (path === '/' && isAuth()) {
+  //   path = '/login';
+  //   window.history.replaceState({}, '', path);
+  // } else if (path === '/login' && !isAuth()) {
+  //   path = '/';
+  //   window.history.replaceState({}, '', path);
+  // } else if (path === '/login' && a) {
+  //   path = '/dashboard';
+  //   window.history.replaceState({}, '', path);
+  // }
 
   const previousContent = document.querySelector('.page-content');
   if (previousContent) {

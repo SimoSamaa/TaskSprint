@@ -1,6 +1,8 @@
 import setlucideICON from '../utils/setlucideICON';
+import attachPasswordToggle from '../utils/attachPasswordToggle';
 import { router } from '../router';
-import { checkAuth } from '../main';
+import { checkSignup } from '../main';
+import CryptoJS from 'crypto-js';
 
 export default function init() {
   const multiSteps = document.querySelectorAll('.steps .step');
@@ -21,21 +23,19 @@ export default function init() {
   document.forms[0]?.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    const encryptedPassword = CryptoJS.AES.encrypt(confirmPass.value, 'your-secret-key').toString();
+
     const user = {
-      id: Date.now(),
       firstName: firstName.value.trim(),
       lastName: lastName.value.trim(),
-      password: confirmPass.value,
+      password: encryptedPassword,
       pic: userPic
     };
 
     // SAVE DATA TO LOCALE STORAGE
     localStorage.setItem('user', JSON.stringify(user));
-
-    // Update authentication status and dispatch a custom event;
-    checkAuth();
-    document.dispatchEvent(new CustomEvent('authStatusChanged'));
-
+    document.dispatchEvent(new Event('SignupChanged'));
+    checkSignup();
   });
 
   const updateSteps = () => {
@@ -64,7 +64,7 @@ export default function init() {
       next.closest('.actions').style.visibility = 'hidden';
       uploadImg.remove();
       multiSteps[2].innerHTML = `
-        <div class='test'>
+        <div class='start-app'>
           <img src="../../assets/logo-2.png"></img>
           <h2>Thank you for signing up! please click in the button below to start your application</h2>
           <button class='btn btn-blue get-start-app' type='button'>Get started</button>
@@ -74,7 +74,7 @@ export default function init() {
       // START APPLICATION
       document.querySelector('.get-start-app')
         .addEventListener('click', () => {
-          router('/dashboard');
+          router('/login');
         });
 
       return;
@@ -200,19 +200,7 @@ export default function init() {
     });
   }
 
-  const togglePassHidden = () => {
-    if (password.type === 'password') {
-      password.type = 'text';
-      showPass.firstElementChild.style.display = 'none';
-      showPass.lastElementChild.style.display = 'block';
-    } else {
-      password.type = 'password';
-      showPass.firstElementChild.style.display = 'block';
-      showPass.lastElementChild.style.display = 'none';
-    }
-  };
-
-  showPass?.addEventListener('click', togglePassHidden);
+  attachPasswordToggle(password, showPass);
 
   setlucideICON();
 };
