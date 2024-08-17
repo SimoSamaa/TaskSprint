@@ -5,6 +5,9 @@ import { checkSignup } from '../main';
 import CryptoJS from 'crypto-js';
 
 export default function init() {
+  // PAGE TITLE
+  document.head.childNodes[9].textContent = 'TaskSprint | signup';
+
   const multiSteps = document.querySelectorAll('.steps .step');
   const currentStepNum = document.querySelectorAll('.current-step span');
   const currentStepEl = document.querySelector('.current-step');
@@ -23,7 +26,9 @@ export default function init() {
   document.forms[0]?.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const encryptedPassword = CryptoJS.AES.encrypt(confirmPass.value, 'your-secret-key').toString();
+    const encryptedPassword = CryptoJS.AES
+      .encrypt(confirmPass.value, import.meta.env.VITE_SECRET_KEY)
+      .toString();
 
     const user = {
       firstName: firstName.value.trim(),
@@ -201,6 +206,5 @@ export default function init() {
   }
 
   attachPasswordToggle(password, showPass);
-
   setlucideICON();
 };

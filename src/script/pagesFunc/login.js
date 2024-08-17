@@ -5,6 +5,9 @@ import { loadUserData, checkAuth } from '../main';
 import CryptoJS from 'crypto-js';
 
 export default function init() {
+  // PAGE TITLE
+  document.head.childNodes[9].textContent = 'TaskSprint | login';
+
   const loginForm = document.querySelector('form');
   const user = loadUserData();
 
@@ -55,7 +58,7 @@ export default function init() {
     const errPass = document.querySelector('.err-mess');
     const encryptedPassword = user.password;
     const decryptedPassword = CryptoJS.AES
-      .decrypt(encryptedPassword, 'your-secret-key')
+      .decrypt(encryptedPassword, import.meta.env.VITE_SECRET_KEY)
       .toString(CryptoJS.enc.Utf8);
 
     if (!inputPass.value) {

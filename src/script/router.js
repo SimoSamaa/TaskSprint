@@ -1,27 +1,21 @@
 import { checkSignup as isSignup, checkAuth as isAuth } from './main';
 
 // Listen for the custom event to update the auth status;
-document.addEventListener('SignupChanged', () => {
-  console.log('signup:', isSignup());
-});
-console.log('signup-2:', isSignup());
-
-document.addEventListener('AuthChanged', () => {
-  console.log('isAuth:', isAuth());
-});
-console.log('isAuth-2:', isAuth());
-
+document.addEventListener('SignupChanged', () => isSignup);
+document.addEventListener('AuthChanged', () => isAuth);
 
 const routeModules = {
   '/': () => import('./pagesFunc/multi-steps-form'),
   '/login': () => import('./pagesFunc/login'),
+  '/dashboard': () => import('./pagesFunc/dashboard'),
+  '/NotFound': () => import('./pagesFunc/NotFound'),
 };
 
 const routes = {
   404: 'pages/NotFound.html',
   '/': 'pages/index.html',
-  '/dashboard': 'pages/dashboard.html',
   '/login': 'pages/login.html',
+  '/dashboard': 'pages/dashboard.html',
 };
 
 async function loadScriptPages(path) {
@@ -41,21 +35,40 @@ function route(event) {
   if (href === window.location.href) return;
   handleLocation();
 }
-let a = false;
+
 async function handleLocation() {
   let path = window.location.pathname;
   const route = routes[path] || routes[404];
 
-  // if (path === '/' && isAuth()) {
-  //   path = '/login';
-  //   window.history.replaceState({}, '', path);
-  // } else if (path === '/login' && !isAuth()) {
-  //   path = '/';
-  //   window.history.replaceState({}, '', path);
-  // } else if (path === '/login' && a) {
-  //   path = '/dashboard';
-  //   window.history.replaceState({}, '', path);
-  // }
+  // NAVIGATION GUARDS
+  if (!isAuth() && !isSignup()) {
+    // Protect both dashboard and login routes for users who are neither authenticated nor signed up
+    if (path === '/dashboard' || path === '/login') {
+      path = '/'; // Redirect to root or any other route as needed
+      window.history.replaceState({}, '', path);
+      window.location.href = path;
+    }
+  } else if (path === '/' && isAuth()) {
+    // Redirect authenticated users from root to dashboard
+    path = '/dashboard';
+    window.history.replaceState({}, '', path);
+    window.location.href = path;
+  } else if (path === '/' && !isAuth() && isSignup()) {
+    // Redirect unauthenticated users who have signed up to login
+    path = '/login';
+    window.history.replaceState({}, '', path);
+    window.location.href = path;
+  } else if (path === '/dashboard' && !isAuth()) {
+    // Protect the dashboard route for unauthorized users
+    path = '/login';
+    window.history.replaceState({}, '', path);
+    window.location.href = path;
+  } else if (path === '/login' && isAuth()) {
+    // Redirect authenticated users from login to dashboard
+    path = '/dashboard';
+    window.history.replaceState({}, '', path);
+    window.location.href = path;
+  }
 
   const previousContent = document.querySelector('.page-content');
   if (previousContent) {

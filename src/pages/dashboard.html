@@ -1,3 +1,38 @@
 <template>
-  <h1>dashboard</h1>
+  <div class="dashboard-page">
+    <!-- DASHBOARD NAVIGATION -->
+    <header>
+      <div>
+        <!-- MENU HEADER -->
+        <div class="menu-header">
+          <div class="hide"></div>
+          <button class="this-btn">
+            <i
+              data-icon="menu"
+              data-size="30px"
+            ></i>
+          </button>
+        </div>
+        <!-- MENU LIST -->
+        <div class="menu-list hide">
+          <button><i data-icon="note"></i>Stick Wall</button>
+        </div>
+      </div>
+      <!-- MENU ACTIONS -->
+      <div class="menu-actions hide">
+        <button class="active"><i data-icon="setting"></i> Setting</button>
+        <button><i data-icon="logout"></i> Logout</button>
+      </div>
+    </header>
+    <main>content</main>
+  </div>
+
+  <link
+    rel="stylesheet"
+    href="../style/dashboard.css"
+  >
+  <script
+    type="module"
+    src="../script/pagesFunc/dashboard.js"
+  ></script>
 </template>

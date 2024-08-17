@@ -1,4 +1,4 @@
-import { createElement, Eye, EyeOff, User, MonitorUp } from 'lucide';
+import { createElement, Eye, EyeOff, User, MonitorUp, Menu, Settings2, LogOut, StickyNote } from 'lucide';
 
 function setlucideICON() {
   const icons = document.querySelectorAll('i');
@@ -15,6 +15,10 @@ function setlucideICON() {
     if (iconName === 'eye-off') iconElement = createElement(EyeOff);
     if (iconName === 'user') iconElement = createElement(User);
     if (iconName === 'upload') iconElement = createElement(MonitorUp);
+    if (iconName === 'menu') iconElement = createElement(Menu);
+    if (iconName === 'setting') iconElement = createElement(Settings2);
+    if (iconName === 'logout') iconElement = createElement(LogOut);
+    if (iconName === 'note') iconElement = createElement(StickyNote);
 
     if (!iconElement) {
       console.warn(`Icon not found for: ${iconName}`);
