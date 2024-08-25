@@ -1,6 +1,7 @@
-import setlucideICON from '../utils/setlucideICON';
-import { router } from '../router';
-import { loadUserData } from '../main';
+import setlucideICON from '../../utils/setlucideICON';
+import { router } from '../../router';
+import { loadUserData } from '../../main';
+import stickWall from './stickWall';
 
 export default function init() {
   // PAGE TITLE
@@ -32,12 +33,14 @@ export default function init() {
   menuHeader?.lastElementChild.addEventListener('click', () => {
     if (dashboardPage.classList.toggle('act-menu_dashboard')) {
       localStorage.setItem('menu_state', 'false');
+      dashboardPage?.classList.remove('act-content_dashboard-right');
     } else {
       localStorage.setItem('menu_state', 'true');
     }
   });
 
   function loadMenuState() {
+    if (!localStorage['menu_state']) return;
     const menuState = JSON.parse(localStorage['menu_state']);
 
     if (menuState) {
@@ -49,11 +52,24 @@ export default function init() {
 
   loadMenuState();
 
+  // OPEN DASHBOARD CONTENT RIGHT
+  menuActions?.firstElementChild.addEventListener('click', () => {
+    dashboardPage?.classList.add('act-content_dashboard-right');
+  });
+
+  document.querySelector('.content_right-close')
+    ?.addEventListener('click', () => {
+      dashboardPage?.classList.remove('act-content_dashboard-right');
+    });
+
   // LOGOUT
   menuActions?.lastElementChild.addEventListener('click', () => {
     sessionStorage.clear();
     router('/login');
   });
+
+  // STICK WALL
+  stickWall();
 
   setlucideICON();
 }

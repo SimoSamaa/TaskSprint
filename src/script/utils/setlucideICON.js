@@ -1,37 +1,55 @@
-import { createElement, Eye, EyeOff, User, MonitorUp, Menu, Settings2, LogOut, StickyNote } from 'lucide';
+import {
+  createElement,
+  Eye,
+  EyeOff,
+  User,
+  MonitorUp,
+  Menu,
+  Settings2,
+  LogOut,
+  StickyNote,
+  X,
+  Plus,
+  Trash2
+} from 'lucide';
 
-function setlucideICON() {
-  const icons = document.querySelectorAll('i');
+const iconMap = {
+  eye: Eye,
+  'eye-off': EyeOff,
+  user: User,
+  upload: MonitorUp,
+  menu: Menu,
+  setting: Settings2,
+  logout: LogOut,
+  note: StickyNote,
+  close: X,
+  plus: Plus,
+  delete: Trash2
+};
 
-  for (let i = 0; i < icons.length; i++) {
-    const icon = icons[i];
-    const iconName = icon.dataset.icon;
-    const iconSize = icon.dataset.size;
-    const iconStroke = icon.dataset.stroke;
+function setLucideIcon() {
+  document.querySelectorAll('i[data-icon]').forEach(icon => {
+    const { icon: iconName, size: iconSize = '20px', stroke: iconStroke = '2.5' } = icon.dataset;
+    const IconComponent = iconMap[iconName];
 
-    let iconElement;
-
-    if (iconName === 'eye') iconElement = createElement(Eye);
-    if (iconName === 'eye-off') iconElement = createElement(EyeOff);
-    if (iconName === 'user') iconElement = createElement(User);
-    if (iconName === 'upload') iconElement = createElement(MonitorUp);
-    if (iconName === 'menu') iconElement = createElement(Menu);
-    if (iconName === 'setting') iconElement = createElement(Settings2);
-    if (iconName === 'logout') iconElement = createElement(LogOut);
-    if (iconName === 'note') iconElement = createElement(StickyNote);
-
-    if (!iconElement) {
+    if (!IconComponent) {
       console.warn(`Icon not found for: ${iconName}`);
-      continue;
+      return;
     }
 
-    iconElement.style.cssText = `
-      width: ${iconSize || '20px'}; 
-      height: ${iconSize || '20px'}; 
-      stroke-width: ${iconStroke || 2.5};
-      `;
+    while (icon.firstChild) {
+      icon.removeChild(icon.firstChild);
+    }
+
+    const iconElement = createElement(IconComponent);
+    Object.assign(iconElement.style, {
+      width: iconSize,
+      height: iconSize,
+      strokeWidth: iconStroke
+    });
+
     icon.appendChild(iconElement);
-  }
+  });
 }
 
-export default setlucideICON;
+export default setLucideIcon;

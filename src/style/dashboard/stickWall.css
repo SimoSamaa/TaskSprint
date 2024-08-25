@@ -1,0 +1,62 @@
+.stick-wall {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 1rem;
+  padding: 1rem 0 0 1rem;
+}
+
+.add-stick-wall {
+  background-color: #EBEBEB !important;
+  display: grid;
+  place-items: center;
+
+  &:active {
+    transform: scale(.95);
+  }
+}
+
+.stick-wall :is(.add-stick-wall, li) {
+  background-color: #fff;
+  border-radius: .5rem;
+  box-shadow: var(--shadow);
+  width: 300px;
+  aspect-ratio: 1/1;
+}
+
+.stick-wall li {
+  position: relative;
+
+  .delete-stick {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: var(--clr-red);
+    padding: .4rem;
+    color: #fff;
+    border-radius: 0 .5rem 0 .5rem;
+    opacity: 0;
+    transform: scale(.9);
+    transition: 300ms ease-out;
+
+    &:is(:hover, :focus-visible) {
+      background-color: var(--clr-red-hover);
+    }
+  }
+
+  &:is(:hover, :focus-visible) .delete-stick {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .editor {
+    height: 100%;
+    padding: 1rem;
+
+    &[contentEditable]:empty::before {
+      content: attr(data-placeholder);
+      color: red;
+      pointer-events: none;
+    }
+  }
+}

@@ -7,7 +7,7 @@ document.addEventListener('AuthChanged', () => isAuth);
 const routeModules = {
   '/': () => import('./pagesFunc/multi-steps-form'),
   '/login': () => import('./pagesFunc/login'),
-  '/dashboard': () => import('./pagesFunc/dashboard'),
+  '/dashboard': () => import('./pagesFunc/dashboard/dashboard'),
   '/NotFound': () => import('./pagesFunc/NotFound'),
 };
 

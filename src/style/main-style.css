@@ -5,14 +5,7 @@
   margin: 0;
   line-height: 1.3;
   box-sizing: border-box;
-}
-
-body.dark {
-  /* APP COLORS DARK */
-  --clr-bg: #EEEEEE;
-  --clr-black: #121212;
-  --clr-gary: #757575;
-  --clr-white: #ffffff;
+  list-style: none;
 }
 
 body {
@@ -26,6 +19,18 @@ body {
 button {
   all: unset;
   cursor: pointer;
+}
+
+button.icon-btn {
+  transition: color 300ms ease-out;
+
+  &:is(:hover, :focus-visible) {
+    color: var(--clr-blue);
+  }
+
+  &:active {
+    transform: scale(.9);
+  }
 }
 
 /* CUSTOM BUTTON */
@@ -145,6 +150,7 @@ button.circle-btn {
     transition: box-shadow 300ms linear;
     font-size: 16px;
     box-shadow: var(--shadow);
+    color: inherit;
 
     &:focus {
       box-shadow: 0 0 0 3px #93c5fd;
