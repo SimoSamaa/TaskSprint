@@ -5,7 +5,10 @@ import {
   User,
   MonitorUp,
   Menu,
-  Settings2, LogOut, StickyNote, X,
+  Settings2,
+  LogOut,
+  StickyNote,
+  X,
   Plus,
   Trash2
 } from 'lucide';
@@ -33,6 +36,8 @@ function setLucideIcon() {
       console.warn(`Icon not found for: ${iconName}`);
       return;
     }
+
+    while (icon.firstChild) icon.removeChild(icon.firstChild);
 
     const iconElement = createElement(IconComponent);
     Object.assign(iconElement.style, {
