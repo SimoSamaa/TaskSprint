@@ -1,15 +1,24 @@
 .stick-wall {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: center; */
   gap: 1rem;
   padding: 1rem 0 0 1rem;
+
+  &.center-stick {
+    justify-content: center;
+  }
 }
 
 .add-stick-wall {
   background-color: #EBEBEB !important;
   display: grid;
   place-items: center;
+  transition: background-color 300ms ease-out, color 300ms ease-out;
+
+  &:is(:hover, :focus-visible) {
+    background-color: hsl(0, 0%, 85%) !important;
+    color: var(--clr-blue);
+  }
 
   &:active {
     transform: scale(.95);
@@ -44,7 +53,8 @@
     }
   }
 
-  &:is(:hover, :focus-visible) .delete-stick {
+  &:is(:hover, :focus-visible) .delete-stick,
+  .delete-stick:focus-visible {
     opacity: 1;
     transform: scale(1);
   }
@@ -52,11 +62,13 @@
   .editor {
     height: 100%;
     padding: 1rem;
+    outline: none;
+    border-radius: .5rem;
+    transition: box-shadow 300ms ease-out;
 
-    &[contentEditable]:empty::before {
-      content: attr(data-placeholder);
-      color: red;
-      pointer-events: none;
+    &:focus {
+      box-shadow: 0 0 0 3px var(--clr-bg),
+        0 0 0 5px var(--stick-clr);
     }
   }
 }

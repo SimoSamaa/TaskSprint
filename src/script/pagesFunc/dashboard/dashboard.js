@@ -68,7 +68,7 @@ export default function init() {
     router('/login');
   });
 
-  // STICK WALL
+  // STICK WALL PAGE
   stickWall();
 
   setlucideICON();

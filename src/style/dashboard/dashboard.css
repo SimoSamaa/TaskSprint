@@ -50,6 +50,7 @@
   top: 1rem;
   padding: 1rem;
   border-radius: .5rem;
+  z-index: 1000;
 }
 
 .dashboard-page header {
@@ -119,7 +120,7 @@
 .dashboard-page .main {
   position: relative;
 
-  h1 {
+  .dashboard-title-page {
     position: sticky;
     top: 1rem;
     font-size: 34px;
@@ -127,6 +128,7 @@
     background-color: var(--clr-bg);
     isolation: isolate;
     padding: 0 1rem 1rem;
+    z-index: 1000;
 
     &::before {
       content: '';
