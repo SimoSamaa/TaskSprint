@@ -1,7 +1,7 @@
 import setlucideICON from '../utils/setlucideICON';
-import attachPasswordToggle from '../utils/attachPasswordToggle';
 import { router } from '../router';
 import { checkSignup } from '../main';
+import helpers from '../utils/helpers';
 import CryptoJS from 'crypto-js';
 
 export default function init() {
@@ -20,6 +20,7 @@ export default function init() {
   const showPass = document.querySelector('.show-pass');
   const uploadImg = document.querySelector('.upload-img');
 
+  const { uploadImage, attachPasswordToggle } = helpers();
   let currentStep = 0;
   let userPic = null;
 
@@ -171,39 +172,7 @@ export default function init() {
   };
 
   // UPLOAD IMAGE
-  uploadImg?.addEventListener('click', uploadImage);
-  function uploadImage() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/png, image/jpeg, image/jpg';
-    input.click();
-
-    input.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/jpg') {
-        alert('file must be an image form png, jpeg, jpg');
-        return;
-      };
-
-      if (file.size > 1024 * 1024 * 1) {
-        alert('file size must be less than 1mb');
-        return;
-      };
-
-      const render = new FileReader();
-
-      render.onload = () => {
-        const img = document.createElement('img');
-        img.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
-        img.src = render.result;
-        userPic = render.result;
-        uploadImg.innerHTML = '';
-        uploadImg.appendChild(img);
-      };
-
-      render.readAsDataURL(file);
-    });
-  }
+  uploadImage(uploadImg, (uploadedPic) => userPic = uploadedPic);
 
   attachPasswordToggle(password, showPass);
   setlucideICON();

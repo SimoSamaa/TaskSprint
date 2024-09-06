@@ -2,6 +2,25 @@ import setlucideICON from '../../utils/setlucideICON';
 import { router } from '../../router';
 import { loadUserData } from '../../main';
 import stickWall from './stickWall';
+import settings from './settings';
+
+export function menuHeaderTemplate(menuHeader, user) {
+  if (menuHeader) {
+    menuHeader.firstElementChild.innerHTML = `
+    <div class='user-pic'></div>
+    <h4>${user.firstName} ${user.lastName}</h4>
+  `;
+
+    menuHeader.querySelector('.user-pic')
+      .innerHTML =
+      user.pic === null
+        ?
+        '<i data-icon="user" data-size="100%" data-stroke="1"></i>'
+        : `<img src='${user.pic}'></img>`;
+  }
+
+  setlucideICON();
+}
 
 export default function init() {
   // PAGE TITLE
@@ -13,22 +32,7 @@ export default function init() {
 
   const user = loadUserData();
 
-  function menuHeaderTemplate() {
-    if (menuHeader) {
-      menuHeader.firstElementChild.innerHTML = `
-      <div class='user-pic'></div>
-      <h4>${user.firstName} ${user.lastName}</h4>
-    `;
-
-      menuHeader.querySelector('.user-pic')
-        .innerHTML =
-        user.pic === null
-          ? '<i data-icon="user" data-size="100%" data-stroke="1"></i>'
-          : `<img src='${user.pic}'></img>`;
-    }
-  }
-
-  menuHeaderTemplate();
+  menuHeaderTemplate(menuHeader, user);
 
   menuHeader?.lastElementChild.addEventListener('click', () => {
     if (dashboardPage.classList.toggle('act-menu_dashboard')) {
@@ -55,6 +59,7 @@ export default function init() {
   // OPEN DASHBOARD CONTENT RIGHT
   menuActions?.firstElementChild.addEventListener('click', () => {
     dashboardPage?.classList.add('act-content_dashboard-right');
+    settings();
   });
 
   document.querySelector('.content_right-close')
@@ -64,12 +69,24 @@ export default function init() {
 
   // LOGOUT
   menuActions?.lastElementChild.addEventListener('click', () => {
+    const logoutConfirm = confirm('Are you sure you want to logout?');
+    if (!logoutConfirm) return;
     sessionStorage.clear();
     router('/login');
   });
 
   // STICK WALL PAGE
   stickWall();
+
+  // LOAD DASHBOARD BACKGROUND
+  function loadBackground() {
+    if (!(dashboardPage instanceof HTMLElement)) return;
+    if (!localStorage.getItem('settings')) return;
+    const settings = JSON.parse(localStorage['settings']);
+    dashboardPage.style.background = `url(${settings.background}) no-repeat center / cover fixed`;
+  }
+
+  loadBackground();
 
   setlucideICON();
 }

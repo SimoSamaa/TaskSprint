@@ -10,7 +10,10 @@ import {
   StickyNote,
   X,
   Plus,
-  Trash2
+  Trash2,
+  MonitorCog,
+  Sun,
+  Moon,
 } from 'lucide';
 
 const iconMap = {
@@ -24,7 +27,10 @@ const iconMap = {
   note: StickyNote,
   close: X,
   plus: Plus,
-  delete: Trash2
+  delete: Trash2,
+  system: MonitorCog,
+  light: Sun,
+  dark: Moon,
 };
 
 function setLucideIcon() {

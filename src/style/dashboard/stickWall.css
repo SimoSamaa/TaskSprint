@@ -10,14 +10,12 @@
 }
 
 .add-stick-wall {
-  background-color: #EBEBEB !important;
+  background-color: var(--clr-white) !important;
   display: grid;
   place-items: center;
-  transition: background-color 300ms ease-out, color 300ms ease-out;
 
-  &:is(:hover, :focus-visible) {
-    background-color: hsl(0, 0%, 85%) !important;
-    color: var(--clr-blue);
+  &:focus-visible {
+    outline: 2px solid var(--clr-blue);
   }
 
   &:active {
@@ -64,11 +62,15 @@
     padding: 1rem;
     outline: none;
     border-radius: .5rem;
-    transition: box-shadow 300ms ease-out;
+    transition: outline-offset 300ms ease-out;
+
+    h1 {
+      text-transform: capitalize;
+    }
 
     &:focus {
-      box-shadow: 0 0 0 3px var(--clr-bg),
-        0 0 0 5px var(--stick-clr);
+      outline-offset: 3px;
+      outline: 3px solid var(--stick-clr);
     }
   }
 }

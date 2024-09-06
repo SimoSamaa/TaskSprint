@@ -1,6 +1,6 @@
 import setlucideICON from '../utils/setlucideICON';
 import { router } from '../router';
-import attachPasswordToggle from '../utils/attachPasswordToggle';
+import helpers from '../utils/helpers';
 import { loadUserData, checkAuth } from '../main';
 import CryptoJS from 'crypto-js';
 
@@ -9,6 +9,7 @@ export default function init() {
   document.head.childNodes[9].textContent = 'TaskSprint | login';
 
   const loginForm = document.querySelector('form');
+  const { attachPasswordToggle } = helpers();
   const user = loadUserData();
 
   function loginFormTemplate() {

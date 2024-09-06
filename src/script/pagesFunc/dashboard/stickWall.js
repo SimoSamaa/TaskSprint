@@ -4,8 +4,18 @@ import setlucideICON from '../../utils/setlucideICON';
 function stickWall() {
   const ul = document.querySelector('ul');
   const form = document.forms[0];
-  const maxLength = 380;
+  const maxLength = 400;
   const colors = ['#FDF2B3', '#D1EAED', '#FFDADA', '#FFD4A9', '#b0c4de', '#d3d3d3', '#ffffe0', '#b0c4de'];
+
+  function formatText(text) {
+    const linkRegex = /((http|https):\/\/[^\s]+)/g;
+    text = text.replace(linkRegex, (match) => {
+      const link = match.length > 43 ? match.slice(0, 43) + '...' : match;
+      return `<a href="${match}" target="_blank">${link}</a>`;
+    });
+
+    return text;
+  }
 
   let sticks = localStorage['sticks'] ? JSON.parse(localStorage['sticks']) : [];
   let num = sticks.length > 0 ? sticks.length : 0;
@@ -20,37 +30,38 @@ function stickWall() {
     li.style.backgroundColor = stick.color;
     li.style.setProperty('--stick-clr', stick.color);
 
-    function formatText(text) {
-      const linkRegex = /((http|https):\/\/[^\s]+)/g;
-      // text = text.replace(linkRegex, (match) => {
-      //   const link = match.length > 43 ? match.slice(0, 43) + '...' : match;
-      //   return `<a href="${match}" target="_blank">${link}</a>`;
-      // });
-
-      return text.replace(/\n/g, '<br>');
-    }
-
     li.innerHTML = `
-      <div class='editor' contentEditable='true' maxLength='10'>
-        ${stick.text}
+      <div class='editor' contentEditable='true' maxLength='400'>
+        ${formatText(stick.text)}
       </div>
       <button class="delete-stick" type='button'>
         <i data-icon='delete' data-stroke='2'></i>
       </button>
       `;
 
-    // LIMIT TEXT LENGTH
     li.addEventListener('input', (e) => {
-      if (e.target.textContent.length > maxLength) {
-        e.target.textContent = e.target.textContent.substring(0, maxLength);
+      let val = e.target.innerHTML.trim();
 
-        const range = document.createRange();
-        const sel = window.getSelection();
-        range.setStart(e.target.childNodes[0], e.target.textContent.length);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
+      if (!val || !e.target.firstElementChild) {
+        val = stick.text;
+        e.target.innerHTML = val;
       }
+
+      function limitTextLength(target, maxLength) {
+        if (target.textContent.length > maxLength) {
+          target.textContent = target.textContent.substring(0, maxLength);
+
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.setStart(target.childNodes[0], target.textContent.length);
+          range.collapse(true);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+
+      limitTextLength(e.target, maxLength); // DIV
+      limitTextLength(e.target.firstElementChild, 21); // H1
     });
 
     li.addEventListener('keydown', (e) => {
@@ -60,13 +71,19 @@ function stickWall() {
       ];
 
       // Check for Ctrl/Cmd key combinations like Ctrl + A, Ctrl + C, Ctrl + X, etc.
-      const isShortcut = (e.ctrlKey || e.metaKey) && ['a', 'c', 'x', 'v', 'z'].includes(e.key.toLowerCase());
+      const isShortcut = (e.ctrlKey || e.metaKey) && ['a', 'c', 'x', 'v', 'z']
+        .includes(e.key.toLowerCase());
 
       if (
         e.target.textContent.length >= maxLength &&
         !allowedKeys.includes(e.key) &&
         !isShortcut
       ) e.preventDefault();
+
+      // PREVENT NEW LINE IF TEXT LENGTH IS GREATER THAN 400 
+      if (e.key === 'Enter' && e.target.childElementCount === 11) {
+        e.preventDefault();
+      }
     });
 
     ul?.appendChild(li);
@@ -74,19 +91,14 @@ function stickWall() {
 
     setlucideICON();
 
-    const editor = li.querySelector('.editor');
-
-    editor.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        //   // e.preventDefault(); // Prevent the default behavior
-        // document.execCommand('insertHTML', false, '<br>'); // Insert a new line
-      }
-    });
-
     // EDIT STICK
     li.firstElementChild?.addEventListener('blur', (e) => {
-      const val = e.target.textContent; // Save the innerHTML to preserve formatting
+      let val = e.target.innerHTML.trim(); // Save the innerHTML to preserve formatting
       const currentTask = sticks.find((stick) => stick.id === id);
+
+      if (!e.target.firstElementChild.textContent) {
+        e.target.innerHTML = '<h1>your title</h1>';
+      }
 
       currentTask.text = val;
       localStorage.setItem('sticks', JSON.stringify(sticks));
@@ -113,7 +125,7 @@ function stickWall() {
       id: uniqueId,
       index: num++,
       color: randomColor,
-      text: '',
+      text: '<h1>your title</h1>'
     };
 
     createTaskList(stick);

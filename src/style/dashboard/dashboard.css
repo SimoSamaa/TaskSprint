@@ -1,7 +1,7 @@
 @import './stickWall.css';
+@import './settings.css';
 
 .dashboard-page {
-  /* padding: 1rem 0 1rem 1rem; */
   padding: 1rem;
   min-height: 100vh;
   display: grid;
@@ -31,6 +31,7 @@
     grid-template-columns: 17rem 2fr 400px;
 
     & .dashboard-content_right {
+      padding-top: 0;
       display: block;
     }
   }
@@ -125,23 +126,8 @@
     top: 1rem;
     font-size: 34px;
     padding-bottom: 1rem;
-    background-color: var(--clr-bg);
-    isolation: isolate;
     padding: 0 1rem 1rem;
     z-index: 1000;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: -2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 73px;
-      background-color: inherit;
-      margin-block: 1rem;
-      z-index: -1;
-    }
   }
 }
 
@@ -149,10 +135,18 @@
   position: fixed !important;
   width: 400px;
   right: 1rem;
+  overflow-y: auto;
+  position: relative;
 
   .dashboard-content_right-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--clr-bg);
+    background-color: inherit;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 }

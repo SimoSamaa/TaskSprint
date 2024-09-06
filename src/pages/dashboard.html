@@ -47,6 +47,103 @@
           <h2>title</h2>
           <button class="icon-btn content_right-close"><i data-icon="close"></i></button>
         </div>
+        <!-- EDIT USER INFO -->
+        <form class="edit-user">
+          <h3>Personal</h3>
+          <!-- UPLOAD USER IMAGE -->
+          <div class="upload-image_container">
+            <button
+              class="upload-img"
+              type="button"
+            >
+              <span>
+                <i
+                  data-icon="user"
+                  data-size="100%"
+                  data-stroke="1"
+                ></i>
+              </span>
+              <div>
+                <p>image allowed png, jpg, jpeg</p>
+                <i
+                  data-icon="upload"
+                  data-size="35px"
+                  data-stroke="1.5"
+                ></i>
+              </div>
+            </button>
+            <div class="actions">
+              <button
+                class="btn btn-green"
+                type="button"
+              >Save</button>
+              <button
+                class="btn btn-blue"
+                type="button"
+              >Reset</button>
+            </div>
+          </div>
+          <!-- USER INPUTS DATA -->
+          <div class="custom-input">
+            <input
+              type="text"
+              placeholder="First name"
+              id="first-name"
+            >
+            <label for="first-name">First name</label>
+          </div>
+          <div class="custom-input">
+            <input
+              type="text"
+              placeholder="Last name"
+              id="last-name"
+            >
+            <label for="last-name">Last name</label>
+          </div>
+          <div>
+            <div class="custom-input">
+              <input
+                type="password"
+                placeholder="Old Password"
+                id="password"
+              >
+              <label for="password">Old password</label>
+              <button
+                class="circle-btn show-pass"
+                type="button"
+              >
+                <i data-icon="eye-off"></i>
+                <i
+                  data-icon="eye"
+                  style="display: none;"
+                ></i>
+              </button>
+            </div>
+            <p class="err-mess"></p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-green">Save</button>
+            <button
+              class="btn btn-blue"
+              type="reset"
+            >Reset</button>
+          </div>
+        </form>
+        <!-- CUSTOM SETTING -->
+        <div class="custom-setting">
+          <h3>Custom</h3>
+          <!-- MODE SYSTEM -->
+          <div class="mode-system">
+            <div class="select-mode"></div>
+            <button class="act">System <i data-icon="system"></i></button>
+            <button>Light <i data-icon="light"></i></button>
+            <button>Dark <i data-icon="dark"></i></button>
+          </div>
+          <!-- CHOOSE BACKGROUND FOR DASHBOARD -->
+          <h4>Choose Background:</h4>
+          <div class="choose-bg"></div>
+          <button class="delete-account btn btn-red">Delete account</button>
+        </div>
       </section>
     </div>
   </div>

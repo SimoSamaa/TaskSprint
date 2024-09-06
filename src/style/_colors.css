@@ -1,8 +1,5 @@
 :root {
   /* APP COLORS LIGHT */
-  --clr-bg: #F5F5F5;
-  --clr-gary: #464141;
-  --clr-white: #ffffff;
   --clr-blue: #3a82ee;
   --clr-red: #ef4444;
   --clr-green: #22c55e;
@@ -12,11 +9,4 @@
 
   /* SHADOW */
   --shadow: 0px 0px 8px rgba(55, 53, 53, 0.1);
-}
-
-body.dark {
-  /* APP COLORS DARK */
-  /* --clr-bg: #313338;
-  --clr-gary: #ffff;
-  --clr-white: #2B2D31; */
 }

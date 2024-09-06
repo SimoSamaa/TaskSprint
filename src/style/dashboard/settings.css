@@ -1,0 +1,93 @@
+.edit-user {
+  margin-block: 1rem;
+  display: grid;
+  gap: 1rem;
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+.upload-image_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .upload-img {
+    width: 150px;
+    font-size: 14px;
+
+    div p {
+      width: 70%;
+    }
+  }
+
+  .actions {
+    display: grid;
+    gap: 1rem;
+    flex: 1;
+  }
+}
+
+/* CUSTOM SETTING */
+.custom-setting {
+  display: grid;
+  gap: 1rem;
+
+  /* MODE SYSTEM */
+  .mode-system {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    .select-mode {
+      position: absolute;
+      left: 0;
+      background-color: var(--clr-blue);
+      height: 50px;
+      width: calc(100% / 3);
+      border-radius: .3rem;
+      box-shadow: var(--shadow);
+      z-index: -1;
+      transition: left 300ms ease-out;
+    }
+
+    button {
+      flex: 1;
+      font-weight: 600;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      transition: color 300ms ease-out;
+
+      &.act {
+        color: #fff;
+      }
+    }
+  }
+
+  /* CHOOSE BACKGROUND FOR DASHBOARD */
+  .choose-bg {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      width: calc(100% / 3);
+      height: 70px;
+      background-color: red;
+      border-radius: .3rem;
+      transition: outline 150ms ease-out;
+
+      &.act {
+        outline: 2px solid var(--clr-blue);
+      }
+    }
+  }
+}
