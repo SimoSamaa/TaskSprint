@@ -1,5 +1,5 @@
 import { loadUserData } from '../../main';
-import { menuHeaderTemplate } from './dashboard';
+import { applyBlurEffect, menuHeaderTemplate } from './dashboardHelpers';
 import helpers from '../../utils/helpers';
 import setlucideICON from '../../utils/setlucideICON';
 import CryptoJS from 'crypto-js';
@@ -155,25 +155,50 @@ function settings() {
 
   // CUSTOM SETTINGS
   const modeSystem = document.querySelector('.mode-system');
+  const setting =
+    JSON.parse(localStorage.getItem('settings')) ||
+    {
+      background: null,
+      activeBg: null,
+      mode: null,
+      selectMode: null,
+    };
 
   ![...modeSystem.children].forEach((ele, ind) => {
     const selectMode = modeSystem.firstElementChild;
+
     ele.addEventListener('click', (e) => {
       if (!(ele.tagName.toLowerCase() === 'button')) return;
       selectMode.style.left = `${e.currentTarget.offsetLeft}px`;
+      setting.selectMode = e.currentTarget.offsetLeft;
+      localStorage.setItem('settings', JSON.stringify(setting));
       [...modeSystem.children].forEach((ele) => ele.classList.remove('act'));
       ele.classList.add('act');
+
+      // Toggle between light and dark mode
+      const modes = ['system-1', 'light-mode-2', 'dark-mode-3'];
+      if (modes[ind - 1]) toggleMode(modes[ind - 1]);
     });
+
+    if (localStorage.getItem('settings')) {
+      selectMode.style.left = `${JSON.parse(localStorage['settings']).selectMode}px`;
+      const currentActMode = +JSON.parse(localStorage['settings'] || null)?.mode?.split('-')[2];
+      ind === currentActMode ? ele.classList.add('act') : ele.classList.remove('act');
+    }
   });
+
+  function toggleMode(mode) {
+    document.body.classList.toggle('light-mode-2', mode === 'light-mode-2');
+    document.body.classList.toggle('dark-mode-3', mode === 'dark-mode-3');
+
+    setting.mode = mode;
+    localStorage.setItem('settings', JSON.stringify(setting));
+  }
 
   // CHOOSE BACKGROUND FOR DASHBOARD
   const chooseBg = document.querySelector('.choose-bg');
   const bgPath = '../../../assets/backgrounds/';
   const backgrounds = [`${bgPath}bg-1.jpg`, `${bgPath}bg-2.jpg`, `${bgPath}bg-3.jpg`];
-  const setting = {
-    background: null,
-    activeBg: null
-  };
 
   function chooseBgDashboard() {
     chooseBg.innerHTML = '';
@@ -191,29 +216,26 @@ function settings() {
         document.querySelector('.dashboard-page')
           .style.background = `url(${setting.background}) no-repeat center / cover fixed`;
         localStorage.setItem('settings', JSON.stringify(setting));
+        applyBlurEffect();
       });
 
       const currentBg = JSON.parse(localStorage['settings'] || null)?.activeBg;
       if (i === currentBg) button.classList.add('act');
-
-      document.querySelectorAll
-        (`
-          :is(
-          .header-container header, 
-          .dashboard-content_right, 
-          .add-stick-wall)
-          `)
-        .forEach((ele, ind) => {
-          if (isNaN(currentBg)) return;
-          ele.style.cssText = `
-            background-color: #ffffff38 !important; 
-            backdrop-filter: blur(15px)
-            `;
-        });
     }
   }
 
   chooseBgDashboard();
+
+  // RESET BACKGROUND
+  document.querySelector('.reset-bg')
+    .addEventListener('click', () => {
+      setting.background = null;
+      setting.activeBg = null;
+      document.querySelector('.dashboard-page').style.background = '';
+      applyBlurEffect((ele) => ele.classList.remove('bg-blur'));
+      localStorage.setItem('settings', JSON.stringify(setting));
+      chooseBgDashboard();
+    });
 
   // DELETE ACCOUNT
   document.querySelector('.delete-account')

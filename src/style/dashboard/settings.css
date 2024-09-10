@@ -1,5 +1,4 @@
 .edit-user {
-  margin-block: 1rem;
   display: grid;
   gap: 1rem;
 
@@ -81,7 +80,6 @@
     button {
       width: calc(100% / 3);
       height: 70px;
-      background-color: red;
       border-radius: .3rem;
       transition: outline 150ms ease-out;
 

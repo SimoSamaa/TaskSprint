@@ -39,7 +39,7 @@
   &::before {
     width: 99%;
     background-color: var(--clr-bg);
-    border: 2px solid var(--clr-blue);
+    border: 1.5px solid var(--clr-blue);
   }
 
   &::after {

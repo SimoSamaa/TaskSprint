@@ -3,24 +3,7 @@ import { router } from '../../router';
 import { loadUserData } from '../../main';
 import stickWall from './stickWall';
 import settings from './settings';
-
-export function menuHeaderTemplate(menuHeader, user) {
-  if (menuHeader) {
-    menuHeader.firstElementChild.innerHTML = `
-    <div class='user-pic'></div>
-    <h4>${user.firstName} ${user.lastName}</h4>
-  `;
-
-    menuHeader.querySelector('.user-pic')
-      .innerHTML =
-      user.pic === null
-        ?
-        '<i data-icon="user" data-size="100%" data-stroke="1"></i>'
-        : `<img src='${user.pic}'></img>`;
-  }
-
-  setlucideICON();
-}
+import { applyBlurEffect, menuHeaderTemplate } from './dashboardHelpers';
 
 export default function init() {
   // PAGE TITLE
@@ -41,6 +24,8 @@ export default function init() {
     } else {
       localStorage.setItem('menu_state', 'true');
     }
+
+    applyBlurEffect();
   });
 
   function loadMenuState() {
@@ -87,6 +72,7 @@ export default function init() {
   }
 
   loadBackground();
+  applyBlurEffect();
 
   setlucideICON();
 }

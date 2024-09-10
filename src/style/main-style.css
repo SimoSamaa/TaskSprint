@@ -20,6 +20,7 @@ body {
     --clr-bg: #313338;
     --clr-gary: #ffff;
     --clr-white: #2B2D31;
+    --clr-blur: #00000063;
   }
 }
 
@@ -28,7 +29,22 @@ body {
     --clr-bg: #F5F5F5;
     --clr-gary: #464141;
     --clr-white: #ffffff;
+    --clr-blur: #ffffff63;
   }
+}
+
+body.light-mode-2 {
+  --clr-bg: #F5F5F5;
+  --clr-gary: #464141;
+  --clr-white: #ffffff;
+  --clr-blur: #ffffff63;
+}
+
+body.dark-mode-3 {
+  --clr-bg: #313338;
+  --clr-gary: #ffff;
+  --clr-white: #2B2D31;
+  --clr-blur: #00000063;
 }
 
 /* RESET BUTTON */

@@ -31,7 +31,7 @@
     grid-template-columns: 17rem 2fr 400px;
 
     & .dashboard-content_right {
-      padding-top: 0;
+      padding: 0;
       display: block;
     }
   }
@@ -138,15 +138,39 @@
   overflow-y: auto;
   position: relative;
 
+  & > * {
+    padding: 1rem;
+  }
+
   .dashboard-content_right-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: 1rem;
     border-bottom: 1px solid var(--clr-bg);
     background-color: inherit;
     position: sticky;
     top: 0;
     z-index: 10;
+  }
+}
+
+/* APPLY BLUR BACKGROUND */
+.bg-blur {
+  background-color: var(--clr-blur) !important;
+  backdrop-filter: blur(15px);
+  color: #fff;
+
+  :is(.custom-input input, .upload-img, .user-pic) {
+    background-color: transparent !important;
+    backdrop-filter: blur(1px);
+  }
+
+  .user-pic {
+    border-color: #fff !important;
+  }
+
+  .dashboard-content_right-header {
+    background-color: transparent;
+    backdrop-filter: contrast(0.1);
   }
 }

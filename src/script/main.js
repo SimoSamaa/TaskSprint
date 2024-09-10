@@ -15,3 +15,11 @@ export function loadUserData() {
     return {};
   }
 }
+
+function loadAppMode() {
+  if (localStorage.getItem('settings')) {
+    document.body.classList.add(JSON.parse(localStorage['settings']).mode);
+  }
+}
+
+loadAppMode();
