@@ -1,4 +1,5 @@
 import { checkSignup as isSignup, checkAuth as isAuth } from './main';
+import notFound from './pagesFunc/404';
 
 // Listen for the custom event to update the auth status;
 document.addEventListener('SignupChanged', () => isSignup);
@@ -8,11 +9,9 @@ const routeModules = {
   '/': () => import('./pagesFunc/multi-steps-form'),
   '/login': () => import('./pagesFunc/login'),
   '/dashboard': () => import('./pagesFunc/dashboard/dashboard'),
-  '/NotFound': () => import('./pagesFunc/NotFound'),
 };
 
 const routes = {
-  404: 'pages/NotFound.html',
   '/': 'pages/index.html',
   '/login': 'pages/login.html',
   '/dashboard': 'pages/dashboard.html',
@@ -36,47 +35,45 @@ function route(event) {
   handleLocation();
 }
 
-async function handleLocation() {
+export async function handleLocation() {
   let path = window.location.pathname;
   const route = routes[path] || routes[404];
 
   // NAVIGATION GUARDS
   if (!isAuth() && !isSignup()) {
-    // Protect both dashboard and login routes for users who are neither authenticated nor signed up
     if (path === '/dashboard' || path === '/login') {
-      path = '/'; // Redirect to root or any other route as needed
+      path = '/'; // Redirect to root if not authorized
       window.history.replaceState({}, '', path);
       window.location.href = path;
     }
   } else if (path === '/' && isAuth()) {
-    // Redirect authenticated users from root to dashboard
-    path = '/dashboard';
+    path = '/dashboard'; // Redirect authenticated users to dashboard
     window.history.replaceState({}, '', path);
     window.location.href = path;
   } else if (path === '/' && !isAuth() && isSignup()) {
-    // Redirect unauthenticated users who have signed up to login
-    path = '/login';
+    path = '/login'; // Redirect signed-up users to login
     window.history.replaceState({}, '', path);
     window.location.href = path;
   } else if (path === '/dashboard' && !isAuth()) {
-    // Protect the dashboard route for unauthorized users
-    path = '/login';
+    path = '/login'; // Redirect unauthorized users to login
     window.history.replaceState({}, '', path);
     window.location.href = path;
   } else if (path === '/login' && isAuth()) {
-    // Redirect authenticated users from login to dashboard
-    path = '/dashboard';
+    path = '/dashboard'; // Redirect authenticated users from login to dashboard
     window.history.replaceState({}, '', path);
     window.location.href = path;
   }
 
   const previousContent = document.querySelector('.page-content');
-  if (previousContent) {
-    document.body.removeChild(previousContent);
-  }
+  if (previousContent) document.body.removeChild(previousContent);
+
 
   try {
     const response = await fetch(route);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const html = await response.text();
 
     const container = document.createElement('section');
@@ -84,8 +81,16 @@ async function handleLocation() {
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    const template = doc.head.lastElementChild.content.cloneNode(true);
-    container.appendChild(template);
+
+    const template = doc.querySelector('template');
+    if (template && template.content) {
+      container.appendChild(template.content.cloneNode(true));
+      document.querySelector('.not-found')?.remove();
+      document.getElementById('not-found-css')?.remove();
+    } else {
+      // LOAD NOT FOUND PAGE IF ROUTE NOT FOUND 404
+      notFound(() => router('/'));
+    }
 
     document.body.appendChild(container);
 
