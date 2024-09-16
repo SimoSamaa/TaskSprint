@@ -5,7 +5,65 @@ function stickWall() {
   const ul = document.querySelector('ul');
   const form = document.forms[0];
   const maxLength = 400;
-  const colors = ['#FDF2B3', '#D1EAED', '#FFDADA', '#FFD4A9', '#b0c4de', '#d3d3d3', '#ffffe0', '#b0c4de'];
+
+  const colors = {
+    '#FDF2B3': '#857f5c',
+    '#D1EAED': '#708183',
+    '#FFDADA': '#996c6c',
+    '#FFD4A9': '#a6896c',
+    '#b0c4de': '#728193',
+    '#d3d3d3': '#746f6f',
+    '#ffffe0': '#6b6b48',
+    '#a9c08f': '#4c5e39'
+  };
+
+  let sticks = localStorage['sticks'] ? JSON.parse(localStorage['sticks']) : [];
+  let num = sticks.length > 0 ? sticks.length : 0;
+  const media = window.matchMedia('(prefers-color-scheme: light)');
+  let preferenceMode = localStorage.getItem('preferenceMode') || (media.matches ? 'light' : 'dark');
+
+  function updateColors() {
+    const mode = preferenceMode;
+    return Object.fromEntries(
+      Object.entries(colors)
+        .map(([lightColor, darkColor]) =>
+          [lightColor, mode === 'light' ? lightColor : darkColor]
+        )
+    );
+  };
+
+  function applyColors() {
+    const currentColors = updateColors();
+
+    sticks.forEach(stick => {
+      const li = document.getElementById(stick.id);
+      if (li) {
+        li.style.backgroundColor = currentColors[stick.color];
+        li.style.setProperty('--stick-clr', currentColors[stick.color]);
+      }
+    });
+  }
+
+  applyColors();
+  media.addEventListener('change', () => {
+    preferenceMode = media.matches ? 'light' : 'dark';
+    localStorage.setItem('preferenceMode', preferenceMode);
+    applyColors();
+  });
+
+  document.querySelectorAll('.mode-system button')
+    .forEach((btn, ind) => {
+      btn.addEventListener('click', () => {
+        [media.matches ? 'light' : 'dark', 'light', 'dark']
+          .forEach((mode, i) => {
+            if (ind === i) {
+              preferenceMode = mode;
+              localStorage.setItem('preferenceMode', mode);
+            }
+          });
+        applyColors();
+      });
+    });
 
   function formatText(text) {
     const linkRegex = /((http|https):\/\/[^\s]+)/g;
@@ -17,18 +75,15 @@ function stickWall() {
     return text;
   }
 
-  let sticks = localStorage['sticks'] ? JSON.parse(localStorage['sticks']) : [];
-  let num = sticks.length > 0 ? sticks.length : 0;
-
   function createTaskList(stick) {
-    // CREATE STICK
+    const currentColors = updateColors();
     const li = document.createElement('li');
     const id = stick.id;
 
     li.id = id;
     li.dataset.index = stick.index;
-    li.style.backgroundColor = stick.color;
-    li.style.setProperty('--stick-clr', stick.color);
+    li.style.backgroundColor = currentColors[stick.color];
+    li.style.setProperty('--stick-clr', currentColors[stick.color]);
 
     li.innerHTML = `
       <div class='editor' contentEditable='true' maxLength='400'>
@@ -70,7 +125,6 @@ function stickWall() {
         'Control', 'Meta', 'Shift', 'Alt', 'Home', 'End', 'Tab', 'Escape'
       ];
 
-      // Check for Ctrl/Cmd key combinations like Ctrl + A, Ctrl + C, Ctrl + X, etc.
       const isShortcut = (e.ctrlKey || e.metaKey) && ['a', 'c', 'x', 'v', 'z']
         .includes(e.key.toLowerCase());
 
@@ -80,7 +134,6 @@ function stickWall() {
         !isShortcut
       ) e.preventDefault();
 
-      // PREVENT NEW LINE IF TEXT LENGTH IS GREATER THAN 400 
       if (e.key === 'Enter' && e.target.childElementCount === 11) {
         e.preventDefault();
       }
@@ -91,9 +144,8 @@ function stickWall() {
 
     setlucideICON();
 
-    // EDIT STICK
     li.firstElementChild?.addEventListener('blur', (e) => {
-      let val = e.target.innerHTML.trim(); // Save the innerHTML to preserve formatting
+      let val = e.target.innerHTML.trim();
       const currentTask = sticks.find((stick) => stick.id === id);
 
       if (!e.target.firstElementChild.textContent) {
@@ -104,7 +156,6 @@ function stickWall() {
       localStorage.setItem('sticks', JSON.stringify(sticks));
     });
 
-    // DELETE STICK
     li.lastElementChild.addEventListener('click', (e) => {
       e.target.closest('li').remove();
       sticks = sticks.filter((stick) => stick.id !== id);
@@ -119,12 +170,14 @@ function stickWall() {
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const uniqueId = uuidv4();
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const currentColors = updateColors();
+    const colorKeys = Object.keys(currentColors);
+    const color = colorKeys[Math.floor(Math.random() * colorKeys.length)];
 
     const stick = {
       id: uniqueId,
       index: num++,
-      color: randomColor,
+      color: color,
       text: '<h1>your title</h1>'
     };
 
@@ -156,7 +209,7 @@ function stickWall() {
     });
   }
 
-  document.onload = updateTaskElement(sticks);
+  updateTaskElement(sticks);
 }
 
 export default stickWall;

@@ -47,6 +47,19 @@ body.dark-mode-3 {
   --clr-blur: #00000063;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  margin-block: .5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--clr-blue);
+  border-radius: 100vh;
+}
+
 /* RESET BUTTON */
 button {
   all: unset;

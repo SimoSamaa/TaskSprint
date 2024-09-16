@@ -33,6 +33,8 @@
 
 .stick-wall li {
   position: relative;
+  transition: background-color 300ms ease-out;
+  backdrop-filter: blur(10px);
 
   .delete-stick {
     position: absolute;
@@ -72,5 +74,11 @@
       outline-offset: 3px;
       outline: 3px solid var(--stick-clr);
     }
+  }
+}
+
+@media (max-width: 450px) {
+  .stick-wall :is(.add-stick-wall, li) {
+    width: 260px;
   }
 }

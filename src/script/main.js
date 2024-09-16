@@ -18,7 +18,7 @@ export function loadUserData() {
 
 function loadAppMode() {
   if (localStorage.getItem('settings')) {
-    document.body.classList.add(JSON.parse(localStorage['settings']).mode);
+    document.body.classList.add(JSON.parse(localStorage['settings'])?.mode);
   }
 }
 

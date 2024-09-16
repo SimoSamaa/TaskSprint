@@ -3,6 +3,7 @@ import { applyBlurEffect, menuHeaderTemplate } from './dashboardHelpers';
 import helpers from '../../utils/helpers';
 import setlucideICON from '../../utils/setlucideICON';
 import CryptoJS from 'crypto-js';
+import { router } from '../../router';
 
 function settings() {
   const settings = document.querySelector('.dashboard-content_right');
@@ -181,9 +182,10 @@ function settings() {
     });
 
     if (localStorage.getItem('settings')) {
-      selectMode.style.left = `${JSON.parse(localStorage['settings']).selectMode}px`;
-      const currentActMode = +JSON.parse(localStorage['settings'] || null)?.mode?.split('-')[2];
-      ind === currentActMode ? ele.classList.add('act') : ele.classList.remove('act');
+      selectMode.style.left = `${JSON.parse(localStorage['settings'])?.selectMode}px`;
+      let currentActMode = JSON.parse(localStorage['settings'] || null)?.mode?.split('-')[2];
+      currentActMode = currentActMode === undefined ? 1 : currentActMode;
+      ind === +currentActMode ? ele.classList.add('act') : ele.classList.remove('act');
     }
   });
 
@@ -198,7 +200,7 @@ function settings() {
   // CHOOSE BACKGROUND FOR DASHBOARD
   const chooseBg = document.querySelector('.choose-bg');
   const bgPath = '../../../assets/backgrounds/';
-  const backgrounds = [`${bgPath}bg-1.jpg`, `${bgPath}bg-2.jpg`, `${bgPath}bg-3.jpg`];
+  const backgrounds = [`${bgPath}bg-1.png`, `${bgPath}bg-2.png`, `${bgPath}bg-3.png`];
 
   function chooseBgDashboard() {
     chooseBg.innerHTML = '';
@@ -217,6 +219,7 @@ function settings() {
           .style.background = `url(${setting.background}) no-repeat center / cover fixed`;
         localStorage.setItem('settings', JSON.stringify(setting));
         applyBlurEffect();
+        document.dispatchEvent(new Event('navBlur'));
       });
 
       const currentBg = JSON.parse(localStorage['settings'] || null)?.activeBg;
@@ -234,6 +237,7 @@ function settings() {
       document.querySelector('.dashboard-page').style.background = '';
       applyBlurEffect((ele) => ele.classList.remove('bg-blur'));
       localStorage.setItem('settings', JSON.stringify(setting));
+      document.dispatchEvent(new Event('navBlur'));
       chooseBgDashboard();
     });
 
@@ -244,7 +248,7 @@ function settings() {
       if (!confirm) return;
       localStorage.clear();
       sessionStorage.clear();
-      window.location.href = '/';
+      router('/');
     });
 
   setlucideICON();

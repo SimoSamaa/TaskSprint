@@ -21,12 +21,25 @@ export default function init() {
     if (dashboardPage.classList.toggle('act-menu_dashboard')) {
       localStorage.setItem('menu_state', 'false');
       dashboardPage?.classList.remove('act-content_dashboard-right');
+      toggleCheckBlur();
     } else {
       localStorage.setItem('menu_state', 'true');
     }
 
     applyBlurEffect();
   });
+
+  document.addEventListener('navBlur', toggleCheckBlur);
+  function toggleCheckBlur() {
+    if (!localStorage.getItem('settings')) return;
+    if (JSON.parse(localStorage['settings']).background) {
+      dashboardPage?.firstElementChild.firstElementChild.classList.add('check-blur');
+    } else {
+      dashboardPage?.firstElementChild.firstElementChild.classList.remove('check-blur');
+    }
+  }
+
+  toggleCheckBlur();
 
   function loadMenuState() {
     if (!localStorage['menu_state']) return;
@@ -68,7 +81,7 @@ export default function init() {
     if (!(dashboardPage instanceof HTMLElement)) return;
     if (!localStorage.getItem('settings')) return;
     const settings = JSON.parse(localStorage['settings']);
-    dashboardPage.style.background = `url(${settings.background}) no-repeat center / cover fixed`;
+    dashboardPage.style.background = `url(${settings?.background}) no-repeat center / cover fixed`;
   }
 
   loadBackground();

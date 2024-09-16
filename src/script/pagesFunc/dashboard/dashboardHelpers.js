@@ -11,7 +11,7 @@ function applyBlurEffect(cb) {
   `)
     .forEach((ele, ind) => {
       if (localStorage.getItem('settings')) {
-        if ((JSON.parse(localStorage['settings']).background === null)) return;
+        if ((JSON.parse(localStorage['settings'])?.background === null)) return;
         ele.classList.add('bg-blur');
 
         if (localStorage.getItem('menu_state')) {
