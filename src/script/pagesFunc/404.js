@@ -15,7 +15,7 @@ export default function notFound(cb) {
           <img src='../../assets/logo-2.png'></img>
             <div class="content">
               <div>
-              <h1>400</h1>
+              <h1>404</h1>
               <h1>Page not found</h1>
             </div>
           <button class='btn btn-blue go-back'>Go back</button>

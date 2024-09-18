@@ -6,7 +6,8 @@ function applyBlurEffect(cb) {
     :is(
     .header-container header, 
     .dashboard-content_right, 
-    .add-stick-wall
+    .add-stick-wall,
+    #input-add-task
     )
   `)
     .forEach((ele, ind) => {

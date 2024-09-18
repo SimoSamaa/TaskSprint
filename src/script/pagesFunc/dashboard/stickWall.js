@@ -97,11 +97,6 @@ function stickWall() {
     li.addEventListener('input', (e) => {
       let val = e.target.innerHTML.trim();
 
-      // if (!val || !e.target.firstElementChild) {
-      //   val = stick.text;
-      //   e.target.innerHTML = val;
-      // }
-
       if (!val || !e.target.querySelector('h1')) {
         e.target.innerHTML = '<h1>your title</h1>' + (val ? val : '');
       }
@@ -119,8 +114,6 @@ function stickWall() {
         }
       }
 
-      // limitTextLength(e.target, maxLength); // DIV
-      // limitTextLength(e.target.firstElementChild, 21); // H1
       limitTextLength(e.target, maxLength); // DIV
       limitTextLength(e.target.querySelector('h1'), 21); // H1
     });
@@ -153,10 +146,6 @@ function stickWall() {
     li.firstElementChild?.addEventListener('blur', (e) => {
       let val = e.target.innerHTML.trim();
       const currentTask = sticks.find((stick) => stick.id === id);
-
-      // if (!e.target.firstElementChild.textContent) {
-      //   e.target.innerHTML = '<h1>your title</h1>';
-      // }
 
       if (!e.target.querySelector('h1') || !e.target.querySelector('h1').textContent.trim()) {
         e.target.innerHTML = '<h1>your title</h1>' + (val ? val : '');

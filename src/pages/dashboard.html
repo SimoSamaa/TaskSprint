@@ -16,8 +16,14 @@
           </div>
           <!-- MENU LIST -->
           <div class="menu-list hide">
-            <button class="active-sec"><i data-icon="note"></i>
+            <button
+              class="active-sec"
+              data-tab="stick"
+            ><i data-icon="note"></i>
               <p class="nav-btn-text">Stick Wall</p>
+            </button>
+            <button data-tab="todo"><i data-icon="list"></i>
+              <p class="nav-btn-text">Todo List</p>
             </button>
           </div>
         </div>
@@ -33,7 +39,7 @@
       </header>
     </div>
     <!-- MAIN CONTENT -->
-    <form class="main">
+    <form class="stick main active-tab">
       <!-- TITLE -->
       <h1 class="dashboard-title-page">Stick Wall</h1>
       <!-- STICK WALL -->
@@ -46,6 +52,39 @@
         </button>
       </ul>
     </form>
+    <div class="todo main">
+      <h1 class="dashboard-title-page">Todo List</h1>
+      <section class="todo-sec">
+        <!-- ADD TASK -->
+        <form class='submit-todoList-tasks'>
+          <textarea
+            id="input-add-task"
+            placeholder="New TODO..."
+          ></textarea>
+          <div class="actions">
+            <select>
+              <option selected>choose category</option>
+              <option>Personal</option>
+              <option>Home</option>
+              <option>Work</option>
+              <option>Entertainment</option>
+            </select>
+            <button class="add-task btn btn-blue">Add <i data-icon="plus"></i></button>
+          </div>
+        </form>
+        <!-- TODO TASKS FILTER -->
+        <br>
+        <div class="filter">
+          <select>
+            <option selected>All</option>
+            <option>Personal</option>
+            <option>Home</option>
+            <option>Work</option>
+            <option>Entertainment</option>
+          </select>
+        </div>
+      </section>
+    </div>
     <!-- DASHBOARD CONTENT RIGHT -->
     <div class="dashboard-content_right-container">
       <section class="dashboard-content_right">

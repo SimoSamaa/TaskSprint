@@ -1,4 +1,5 @@
 @import './stickWall.css';
+@import './todoList.css';
 @import './settings.css';
 
 .dashboard-page {
@@ -103,6 +104,7 @@
     padding-block: 1rem;
     margin-top: 1rem;
     display: grid;
+    gap: 1rem;
   }
 
   button:not(.this-btn) {
@@ -128,6 +130,11 @@
 
 .dashboard-page .main {
   position: relative;
+  display: none;
+
+  &.active-tab {
+    display: block;
+  }
 
   .dashboard-title-page {
     position: sticky;
@@ -173,6 +180,10 @@
     backdrop-filter: blur(1px);
   }
 
+  &::placeholder {
+    color: #fff;
+  }
+
   .user-pic {
     border-color: #fff !important;
   }
@@ -181,6 +192,10 @@
     background-color: transparent;
     backdrop-filter: contrast(0.1);
   }
+}
+
+.toggle-class {
+  color: #fff;
 }
 
 @media (max-width: 1000px) {
@@ -208,7 +223,7 @@
     }
 
     & header .hide {
-      display: block;
+      display: grid;
     }
 
     .menu-header {

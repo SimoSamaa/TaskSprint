@@ -46,11 +46,11 @@ function settings() {
     localStorage.setItem('user', JSON.stringify(user));
   });
 
-  const firstName = document.forms[1].querySelector('#first-name');
-  const lastName = document.forms[1].querySelector('#last-name');
-  const password = document.forms[1].querySelector('#password');
-  const errMess = document.forms[1].querySelector('.err-mess');
-  const showPass = document.forms[1].querySelector('.show-pass');
+  const firstName = document.forms[2].querySelector('#first-name');
+  const lastName = document.forms[2].querySelector('#last-name');
+  const password = document.forms[2].querySelector('#password');
+  const errMess = document.forms[2].querySelector('.err-mess');
+  const showPass = document.forms[2].querySelector('.show-pass');
 
   firstName.value = user.firstName;
   lastName.value = user.lastName;
@@ -110,7 +110,7 @@ function settings() {
   }
 
   // EDIT USER INFO
-  document.forms[1].addEventListener('submit', (e) => {
+  document.forms[2].addEventListener('submit', (e) => {
     e.preventDefault();
 
     // FIRST NAME AND LAST NAME VALIDATION
@@ -219,7 +219,8 @@ function settings() {
           .style.background = `url(${setting.background}) no-repeat center / cover fixed`;
         localStorage.setItem('settings', JSON.stringify(setting));
         applyBlurEffect();
-        document.dispatchEvent(new Event('navBlur'));
+        document.dispatchEvent(new Event('backgroundChanged'));
+        document.querySelector('.dashboard-title-page').classList.add('zaba');
       });
 
       const currentBg = JSON.parse(localStorage['settings'] || null)?.activeBg;
@@ -237,7 +238,7 @@ function settings() {
       document.querySelector('.dashboard-page').style.background = '';
       applyBlurEffect((ele) => ele.classList.remove('bg-blur'));
       localStorage.setItem('settings', JSON.stringify(setting));
-      document.dispatchEvent(new Event('navBlur'));
+      document.dispatchEvent(new Event('backgroundChanged'));
       chooseBgDashboard();
     });
 

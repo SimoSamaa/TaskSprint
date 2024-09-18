@@ -14,6 +14,7 @@ import {
   MonitorCog,
   Sun,
   Moon,
+  ListTodo
 } from 'lucide';
 
 const iconMap = {
@@ -31,6 +32,7 @@ const iconMap = {
   system: MonitorCog,
   light: Sun,
   dark: Moon,
+  list: ListTodo
 };
 
 function setLucideIcon() {

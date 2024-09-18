@@ -2,6 +2,7 @@ import setlucideICON from '../../utils/setlucideICON';
 import { router } from '../../router';
 import { loadUserData } from '../../main';
 import stickWall from './stickWall';
+import todoList from './todoList';
 import settings from './settings';
 import { applyBlurEffect, menuHeaderTemplate } from './dashboardHelpers';
 
@@ -12,10 +13,25 @@ export default function init() {
   const menuHeader = document.querySelector('.menu-header');
   const menuActions = document.querySelector('.menu-actions');
   const dashboardPage = document.querySelector('.dashboard-page');
+  const dashboardTitle = document.querySelectorAll('.dashboard-title-page');
+  const navBtn = document.querySelector('.icon-btn');
 
   const user = loadUserData();
 
   menuHeaderTemplate(menuHeader, user);
+
+  document.querySelectorAll('.menu-list button').forEach((btn, btnInd, arr) => {
+    btn.addEventListener('click', () => {
+      arr.forEach(btn => btn.classList.remove('active-sec'));
+      btn.classList.add('active-sec');
+
+      document.querySelectorAll('.main').forEach((ele) => {
+        ele.classList.remove('active-tab');
+        if (ele.classList.item(0) === btn.dataset.tab)
+          ele.classList.add('active-tab');
+      });
+    });
+  });
 
   menuHeader?.lastElementChild.addEventListener('click', () => {
     if (dashboardPage.classList.toggle('act-menu_dashboard')) {
@@ -29,7 +45,24 @@ export default function init() {
     applyBlurEffect();
   });
 
-  document.addEventListener('navBlur', toggleCheckBlur);
+  function addClass() {
+    dashboardTitle?.forEach(title => title.classList.add('toggle-class'));
+    navBtn?.classList.add('toggle-class');
+  }
+
+  function removeClass() {
+    dashboardTitle?.forEach(title => title.classList.remove('toggle-class'));
+    navBtn?.classList.remove('toggle-class');
+  }
+  function toggleClass() {
+    JSON.parse(localStorage['settings'])?.background ? addClass() : removeClass();
+  }
+
+  document.addEventListener('backgroundChanged', () => {
+    toggleClass();
+    toggleCheckBlur();
+  });
+
   function toggleCheckBlur() {
     if (!localStorage.getItem('settings')) return;
     if (JSON.parse(localStorage['settings']).background) {
@@ -73,8 +106,9 @@ export default function init() {
     router('/login');
   });
 
-  // STICK WALL PAGE
-  stickWall();
+
+  stickWall(); // STICK WALL PAGE
+  todoList(); // TODO LIST PAGE
 
   // LOAD DASHBOARD BACKGROUND
   function loadBackground() {
@@ -82,6 +116,7 @@ export default function init() {
     if (!localStorage.getItem('settings')) return;
     const settings = JSON.parse(localStorage['settings']);
     dashboardPage.style.background = `url(${settings?.background}) no-repeat center / cover fixed`;
+    if (settings?.background) toggleClass();
   }
 
   loadBackground();

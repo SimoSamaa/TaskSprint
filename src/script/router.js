@@ -35,7 +35,7 @@ function route(event) {
   handleLocation();
 }
 
-export async function handleLocation() {
+async function handleLocation() {
   let path = window.location.pathname;
   const route = routes[path] || routes[404];
 
