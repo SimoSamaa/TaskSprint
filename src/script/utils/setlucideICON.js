@@ -14,12 +14,16 @@ import {
   MonitorCog,
   Sun,
   Moon,
-  ListTodo
+  ListTodo,
+  Delete,
+  ChevronDown,
+  Pencil,
 } from 'lucide';
 
 const iconMap = {
   eye: Eye,
   'eye-off': EyeOff,
+  'arrow-down': ChevronDown,
   user: User,
   upload: MonitorUp,
   menu: Menu,
@@ -29,10 +33,12 @@ const iconMap = {
   close: X,
   plus: Plus,
   delete: Trash2,
+  delete2: Delete,
   system: MonitorCog,
   light: Sun,
   dark: Moon,
-  list: ListTodo
+  list: ListTodo,
+  edit: Pencil,
 };
 
 function setLucideIcon() {

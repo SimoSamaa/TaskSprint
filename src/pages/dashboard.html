@@ -57,31 +57,60 @@
       <section class="todo-sec">
         <!-- ADD TASK -->
         <form class='submit-todoList-tasks'>
-          <textarea
-            id="input-add-task"
-            placeholder="New TODO..."
-          ></textarea>
+          <div class="textarea-container">
+            <textarea
+              placeholder="New TODO..."
+              maxlength="400"
+            ></textarea>
+            <span class="textarea-char-count">0/400</span>
+          </div>
           <div class="actions">
+            <div class="select-container">
+              <select>
+                <option selected>pick category</option>
+                <option>Personal</option>
+                <option>Home</option>
+                <option>Work</option>
+                <option>Entertainment</option>
+              </select>
+              <i data-icon="arrow-down"></i>
+            </div>
+            <button class="add-task btn btn-blue">Add <i data-icon="plus"></i></button>
+          </div>
+        </form>
+        <br>
+        <div class="filter-delete">
+          <!-- TODO TASKS FILTER -->
+          <div class="select-container">
             <select>
-              <option selected>choose category</option>
+              <option selected>All</option>
               <option>Personal</option>
               <option>Home</option>
               <option>Work</option>
               <option>Entertainment</option>
             </select>
-            <button class="add-task btn btn-blue">Add <i data-icon="plus"></i></button>
+            <i data-icon="arrow-down"></i>
           </div>
-        </form>
-        <!-- TODO TASKS FILTER -->
-        <br>
-        <div class="filter">
-          <select>
-            <option selected>All</option>
-            <option>Personal</option>
-            <option>Home</option>
-            <option>Work</option>
-            <option>Entertainment</option>
-          </select>
+          <!-- DELETE ALL TASKS -->
+          <button class="btn btn-red">Delete all <i data-icon="delete2"></i></button>
+        </div>
+        <!-- TODO LIST TASKS -->
+        <div class="todo-list-container">
+          <!-- TODO -->
+          <div>
+            <h1>TODO</h1>
+            <ul class="todo"></ul>
+          </div>
+          <!-- doing -->
+          <div>
+            <h1>DOING</h1>
+            <ul class="doing"></ul>
+          </div>
+          <!-- DONE -->
+          <div>
+            <h1>DONE</h1>
+            <ul class="done"></ul>
+          </div>
         </div>
       </section>
     </div>

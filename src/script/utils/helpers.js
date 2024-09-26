@@ -54,7 +54,19 @@ function helpers() {
     }
   }
 
-  return { uploadImage, attachPasswordToggle };
+  // FORMAT TASK CONTENT
+  function formatTaskContent(textContent) {
+    const linkRegex = /((http|https):\/\/[^\s]+)/g;
+
+    textContent = textContent.replace(linkRegex, (match) => {
+      const link = match.length > 24 ? match.slice(0, 24) + '...' : match;
+      return `<a href="${match}" title='${match}' target='_blank' class="task-link">${link}</a>`;
+    });
+
+    return textContent.replace(/\n/g, '<br />');
+  }
+
+  return { uploadImage, attachPasswordToggle, formatTaskContent };
 }
 
 export default helpers;

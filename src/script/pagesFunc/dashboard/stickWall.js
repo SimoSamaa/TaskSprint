@@ -65,16 +65,6 @@ function stickWall() {
       });
     });
 
-  function formatText(text) {
-    const linkRegex = /((http|https):\/\/[^\s]+)/g;
-    text = text.replace(linkRegex, (match) => {
-      const link = match.length > 43 ? match.slice(0, 43) + '...' : match;
-      return `<a href="${match}" target="_blank">${link}</a>`;
-    });
-
-    return text;
-  }
-
   function createTaskList(stick) {
     const currentColors = updateColors();
     const li = document.createElement('li');
@@ -87,7 +77,7 @@ function stickWall() {
 
     li.innerHTML = `
       <div class='editor' contentEditable='true' maxLength='400'>
-        ${formatText(stick.text)}
+        ${stick.text}
       </div>
       <button class="delete-stick" type='button'>
         <i data-icon='delete' data-stroke='2'></i>

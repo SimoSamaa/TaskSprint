@@ -27,6 +27,10 @@ async function loadScriptPages(path) {
 }
 
 function route(event) {
+  document.querySelectorAll('.task-link').forEach((ele) => {
+    window.open(ele.href, '_blank');
+  });
+
   event = event || window.event;
   event.preventDefault();
   window.history.pushState({}, '', event.target.href);

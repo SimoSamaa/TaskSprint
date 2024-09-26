@@ -7,7 +7,9 @@ function applyBlurEffect(cb) {
     .header-container header, 
     .dashboard-content_right, 
     .add-stick-wall,
-    #input-add-task
+    .todo-list-container div:not(.info, .task-header, .task-header .actions),
+    .textarea-container,
+    .textarea-char-count
     )
   `)
     .forEach((ele, ind) => {

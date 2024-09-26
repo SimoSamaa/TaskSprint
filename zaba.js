@@ -1,7 +1,6 @@
 import setlucideICON from '../../utils/setlucideICON';
 import helpers from '../../utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import { Blocks } from 'lucide';
 
 export default function todoList() {
   const addTaskForm = document.forms[1];
@@ -66,32 +65,24 @@ export default function todoList() {
   });
 
   function countLines(ele) {
-    const lineHeight = parseInt(getComputedStyle(ele).lineHeight);
+    const lineHeight = parseInt(getComputedStyle(ele).lineHeight, 10);
     const totalHeight = ele.scrollHeight;
     const lineCount = Math.floor(totalHeight / lineHeight);
     return lineCount;
   };
 
   function checkBtnShowAll(taskEditor, taskEle) {
-    const counterLine = tasks.find((task) => task.id === taskEle.id).counterLine;
-    const editorCounterLine = counterLine || countLines(taskEditor);
+    const editorCounterLine = countLines(taskEditor);
 
     if (
-      editorCounterLine >= 6 &&
-      taskEditor.textContent.length >= 85
+      editorCounterLine === 6 &&
+      taskEditor.textContent.length >= 85 &&
+      taskEditor.contentEditable === 'false'
     ) {
-      display = 'block';
-      taskEle.children[2].children[1].style.display = 'block';
-      taskEle.children[2].children[1].addEventListener('click', (e) => {
-        taskEditor.classList.toggle('show-all')
-          ? e.target.textContent = 'Show less'
-          : e.target.textContent = 'Show all';
-      });
+      taskEle.children[2].children[1].style.display = 'block ';
     } else {
       taskEle.children[2].children[1].style.display = 'none';
     }
-
-    return editorCounterLine;
   }
 
   // DISPLAY TASKS
@@ -148,10 +139,10 @@ export default function todoList() {
       taskEditor.addEventListener('input', (e) => {
         const editorCounterLine = countLines(e.target);
 
-        if (editorCounterLine >= 24) {
-          e.target.contentEditable = false;
-          return;
-        }
+        // if (editorCounterLine >= 24) {
+        //   e.target.contentEditable = false;
+        //   return;
+        // }
 
         // COUNTER MAX LENGTH FOR EDIT TASK
         const taskContentCharCount = taskEle.querySelector('.info p:first-child');
@@ -162,6 +153,8 @@ export default function todoList() {
           e.target.contentEditable = false;
           e.target.textContent = e.target.textContent.slice(0, 400);
         }
+
+        checkBtnShowAll(taskEditor, taskEle);
       });
 
       taskEditor.addEventListener('focus', (e) => {
@@ -221,7 +214,7 @@ export default function todoList() {
 
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (editorCounterLine >= 24) return;
+      // if (editorCounterLine >= 24) return;
       document.execCommand('insertLineBreak');
     }
   };
@@ -257,10 +250,11 @@ export default function todoList() {
       }
     });
 
-    const counterLine = checkBtnShowAll(taskContent, taskEle);
-    tasks = tasks.map((task) => task.id === this.id ? { ...task, content: taskContent.innerHTML, counterLine } : task);
+    this.content = taskContent.innerHTML;
     localStorage.setItem('tasks', JSON.stringify(tasks));
     taskContent.classList.remove('show-all');
+
+    // checkBtnShowAll(taskContent, taskEle);
   };
 
 
