@@ -1,7 +1,6 @@
 import setlucideICON from '../../utils/setlucideICON';
 import helpers from '../../utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import { Blocks } from 'lucide';
 
 export default function todoList() {
   const addTaskForm = document.forms[1];
@@ -12,6 +11,7 @@ export default function todoList() {
   const tasksDropZoon = document.querySelectorAll('.todo-list-container div ul');
 
   let categories = {
+    all: true,
     personal: true,
     home: true,
     work: true,
@@ -34,6 +34,27 @@ export default function todoList() {
     const taskInputLen = e.target.value.length;
     document.querySelector('.textarea-char-count').textContent = `${taskInputLen}/400`;
   }
+
+  // 
+  filter?.addEventListener('change', (e) => {
+    const category = e.target.value.toLowerCase();
+
+    if (category === 'all') {
+      for (const key in categories) {
+        categories[key] = true;
+      }
+    } else {
+      ![...e.target.options].forEach((option) => {
+        categories = {
+          all: true,
+          ...categories,
+          [option.value.toLowerCase()]: option.selected
+        };
+      });
+    }
+
+    renderTasks(tasks);
+  });
 
   addTaskForm?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -74,13 +95,12 @@ export default function todoList() {
 
   function checkBtnShowAll(taskEditor, taskEle) {
     const counterLine = tasks.find((task) => task.id === taskEle.id).counterLine;
-    const editorCounterLine = counterLine || countLines(taskEditor);
+    const editorCounterLine = countLines(taskEditor) === 1 ? counterLine : countLines(taskEditor);
 
     if (
       editorCounterLine >= 6 &&
       taskEditor.textContent.length >= 85
     ) {
-      display = 'block';
       taskEle.children[2].children[1].style.display = 'block';
       taskEle.children[2].children[1].addEventListener('click', (e) => {
         taskEditor.classList.toggle('show-all')
@@ -106,14 +126,16 @@ export default function todoList() {
       tasksDropZoon[ind].innerHTML = '';
     });
 
-    tasks.forEach((task) => {
-      const taskEle = document.createElement('li');
-      taskEle.id = task.id;
-      taskEle.dataset.index = task.index;
-      taskEle.contentEditable = false;
-      taskEle.draggable = true;
+    tasks
+      .filter((task) => categories[task.category])
+      .forEach((task) => {
+        const taskEle = document.createElement('li');
+        taskEle.id = task.id;
+        taskEle.dataset.index = task.index;
+        taskEle.contentEditable = false;
+        taskEle.draggable = true;
 
-      taskEle.innerHTML = `
+        taskEle.innerHTML = `
         <div class='task-header'>
           <h3>${task.category}</h3>
           <div class='actions'>
@@ -129,66 +151,66 @@ export default function todoList() {
         </div>
       `;
 
-      ['todo', 'doing', 'done'].forEach((taskProgress, ind) => {
-        if (task.taskProgress === taskProgress) {
-          tasksDropZoon[ind]?.appendChild(taskEle);
-          setlucideICON();
-        }
-      });
-
-      const editBtn = taskEle.querySelector('.task-header button:first-child');
-      const deleteBtn = taskEle.querySelector('.task-header button:last-child');
-      const taskEditor = taskEle.children[1];
-
-      checkBtnShowAll(taskEditor, taskEle);
-
-      deleteBtn.addEventListener('click', (e) => deleteTask(e, task));
-      editBtn.addEventListener('click', (e) => editTask(e, task));
-
-      taskEditor.addEventListener('input', (e) => {
-        const editorCounterLine = countLines(e.target);
-
-        if (editorCounterLine >= 24) {
-          e.target.contentEditable = false;
-          return;
-        }
-
-        // COUNTER MAX LENGTH FOR EDIT TASK
-        const taskContentCharCount = taskEle.querySelector('.info p:first-child');
-        taskContentCharCount.textContent = `${e.target.textContent.length}/400`;
-
-        // LIMIT EDIT TASK CONTENT TO 400 CHARACTERS;
-        if (e.target.textContent.length >= 400) {
-          e.target.contentEditable = false;
-          e.target.textContent = e.target.textContent.slice(0, 400);
-        }
-      });
-
-      taskEditor.addEventListener('focus', (e) => {
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        e.target.childNodes.forEach((node) => {
-          range.collapse(true);
-
-          if (node.nodeType === Node.TEXT_NODE) {
-            range.setStart(node, node.length);
-          }
-
-          if (node.tagName === 'A') {
-            range.setStart(node.firstChild, node.firstChild.length);
+        ['todo', 'doing', 'done'].forEach((taskProgress, ind) => {
+          if (task.taskProgress === taskProgress) {
+            tasksDropZoon[ind]?.appendChild(taskEle);
+            setlucideICON();
           }
         });
 
-        selection.removeAllRanges();
-        selection.addRange(range);
+        const editBtn = taskEle.querySelector('.task-header button:first-child');
+        const deleteBtn = taskEle.querySelector('.task-header button:last-child');
+        const taskEditor = taskEle.children[1];
 
-        if (e.target.textContent === 'Type something...') {
-          e.target.innerHTML = '';
-        }
+        checkBtnShowAll(taskEditor, taskEle);
+
+        deleteBtn.addEventListener('click', (e) => deleteTask(e, task));
+        editBtn.addEventListener('click', (e) => editTask(e, task));
+
+        taskEditor.addEventListener('input', (e) => {
+          const editorCounterLine = countLines(e.target);
+
+          if (editorCounterLine >= 24) {
+            e.target.contentEditable = false;
+            return;
+          }
+
+          // COUNTER MAX LENGTH FOR EDIT TASK
+          const taskContentCharCount = taskEle.querySelector('.info p:first-child');
+          taskContentCharCount.textContent = `${e.target.textContent.length}/400`;
+
+          // LIMIT EDIT TASK CONTENT TO 400 CHARACTERS;
+          if (e.target.textContent.length >= 400) {
+            e.target.contentEditable = false;
+            e.target.textContent = e.target.textContent.slice(0, 400);
+          }
+        });
+
+        taskEditor.addEventListener('focus', (e) => {
+          const range = document.createRange();
+          const selection = window.getSelection();
+
+          e.target.childNodes.forEach((node) => {
+            range.collapse(true);
+
+            if (node.nodeType === Node.TEXT_NODE) {
+              range.setStart(node, node.length);
+            }
+
+            if (node.tagName === 'A') {
+              range.setStart(node.firstChild, node.firstChild.length);
+            }
+          });
+
+          selection.removeAllRanges();
+          selection.addRange(range);
+
+          if (e.target.textContent === 'Type something...') {
+            e.target.innerHTML = '';
+          }
+        });
+
       });
-
-    });
   }
 
   renderTasks(tasks);
@@ -262,7 +284,6 @@ export default function todoList() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     taskContent.classList.remove('show-all');
   };
-
 
   // DELETE ALL TASKS
   deleteAllTasks?.addEventListener('click', () => {
