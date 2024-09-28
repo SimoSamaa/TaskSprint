@@ -100,23 +100,29 @@
   margin-top: 1rem;
   display: flex;
   gap: 2rem;
-  /* background-color: red; */
+  background-color: red;
 
   > * {
     background-color: var(--clr-white);
     box-shadow: var(--shadow);
     border-radius: .5rem;
     height: fit-content;
+    width: var(--tasks-width);
+    padding: 1rem;
+    position: relative;
 
-    h1 {
-      padding: 1rem;
+    .notFound-tasks {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      transform: translateX(-50%);
     }
 
     ul {
-      padding: 1rem;
-      width: var(--tasks-width);
       display: grid;
       gap: 1rem;
+      margin-top: 1rem;
+      min-height: 2rem;
 
       li {
         background-color: var(--clr-blue);
@@ -167,6 +173,10 @@
           text-overflow: ellipsis;
           line-height: 1.3;
 
+          &[contentEditable="true"] {
+            cursor: text;
+          }
+
           &.show-all {
             display: block;
           }
@@ -193,7 +203,7 @@
 
         &.is-dragging {
           transform: scale(1.05);
-          background-color: rgb(50, 50, 50);
+          background-color: var(--clr-blue-hover);
           color: white;
         }
       }
@@ -202,13 +212,13 @@
 }
 
 @media (-webkit-min-device-pixel-ratio:0) {
-  .todo-list-container div ul {
+  .todo-list-container div {
     --tasks-width: 272px;
   }
 }
 
 @-moz-document url-prefix() {
-  .todo-list-container div ul {
+  .todo-list-container div {
     --tasks-width: 230px;
   }
 }

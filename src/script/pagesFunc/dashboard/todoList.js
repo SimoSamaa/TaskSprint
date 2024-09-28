@@ -35,7 +35,7 @@ export default function todoList() {
     document.querySelector('.textarea-char-count').textContent = `${taskInputLen}/400`;
   }
 
-  // 
+  // FILTER TASK CATEGORY
   filter?.addEventListener('change', (e) => {
     const category = e.target.value.toLowerCase();
 
@@ -59,7 +59,7 @@ export default function todoList() {
   addTaskForm?.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (!addTskInput.value) {
+    if (!addTskInput.value.trim()) {
       alert('Please enter a task');
       return;
     } else if (!selectedCategory.includes(taskCategory.value.toLowerCase())) {
@@ -114,17 +114,44 @@ export default function todoList() {
     return editorCounterLine;
   }
 
+  // DISPLAY NO TASKS MESSAGE
+  function displayNoTasksMess() {
+    tasksDropZoon.forEach((dropZone, ind) => {
+      const tasksEle = [...dropZone.children];
+      const tasksProgress = ['todo', 'doing', 'done'];
+      dropZone.closest('div').children[2].textContent =
+        tasksEle.length === 0 || tasks.length === 0
+          ? `not task in ${tasksProgress[ind]}` : '';
+    });
+  }
+
+  // UPDATE TASK ORDER AND PROGRESS AND SAVE TO LOCAL STORAGE
+  function updateTaskOrder() {
+    const updatedTasks = [];
+
+    tasksDropZoon.forEach((dropZone) => {
+      const taskSection = dropZone.classList.contains('todo') ? 'todo'
+        : dropZone.classList.contains('doing') ? 'doing'
+          : 'done';
+
+      Array.from(dropZone.querySelectorAll('li')).forEach((taskEle, ind) => {
+        const taskId = taskEle.id;
+        const task = tasks.find((task) => task.id.toString() === taskId.toString());
+        task.index = ind;
+        task.taskProgress = taskSection; // Update task progress (todo, doing, done)
+        updatedTasks.push(task);
+      });
+    });
+
+    tasks = updatedTasks;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
   // DISPLAY TASKS
   function renderTasks(tasks) {
-    ['todo', 'doing', 'done'].forEach((taskProgress, ind) => {
-      if (tasksDropZoon[ind] === undefined) return;
-      if (tasks.length === 0 || tasks.some((task) => task.taskProgress !== taskProgress)) {
-        tasksDropZoon[ind].innerHTML = `<p style='text-align: center;'>no task in ${taskProgress}</p>`;
-        return;
-      }
+    tasksDropZoon.forEach((dropZone) => { dropZone.innerHTML = ''; });
 
-      tasksDropZoon[ind].innerHTML = '';
-    });
+    displayNoTasksMess();
 
     tasks
       .filter((task) => categories[task.category])
@@ -158,6 +185,8 @@ export default function todoList() {
           }
         });
 
+        displayNoTasksMess();
+
         const editBtn = taskEle.querySelector('.task-header button:first-child');
         const deleteBtn = taskEle.querySelector('.task-header button:last-child');
         const taskEditor = taskEle.children[1];
@@ -168,13 +197,6 @@ export default function todoList() {
         editBtn.addEventListener('click', (e) => editTask(e, task));
 
         taskEditor.addEventListener('input', (e) => {
-          const editorCounterLine = countLines(e.target);
-
-          if (editorCounterLine >= 24) {
-            e.target.contentEditable = false;
-            return;
-          }
-
           // COUNTER MAX LENGTH FOR EDIT TASK
           const taskContentCharCount = taskEle.querySelector('.info p:first-child');
           taskContentCharCount.textContent = `${e.target.textContent.length}/400`;
@@ -210,7 +232,46 @@ export default function todoList() {
           }
         });
 
+        // START DRAGGING TASK
+        taskEle.addEventListener('dragstart', (e) => {
+          e.target.classList.add('is-dragging');
+        });
+
+        // END DRAGGING TASK
+        taskEle.addEventListener('dragend', (e) => {
+          e.target.classList.remove('is-dragging');
+          updateTaskOrder();
+        });
+
+        // DROP TASK
+        tasksDropZoon.forEach((dropZone) => {
+          dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+
+            const draggingItem = document.querySelector('.is-dragging');
+            const afterElement = insertAboveTask(dropZone, e.clientY);
+
+            if (!afterElement) {
+              dropZone.appendChild(draggingItem);
+            } else {
+              dropZone.insertBefore(draggingItem, afterElement);
+            }
+
+            displayNoTasksMess();
+          });
+        });
       });
+  }
+
+  // Insert task in the correct position
+  function insertAboveTask(container, y) {
+    let draggableElements = Array.from(container.querySelectorAll('li:not(.is-dragging)'));
+
+    return draggableElements.find((element) => {
+      const { top, bottom } = element.getBoundingClientRect();
+      const offset = y - (top + bottom) / 2;
+      return offset < 0;
+    });
   }
 
   renderTasks(tasks);
@@ -239,11 +300,10 @@ export default function todoList() {
   }
 
   function handleKeyDown(e) {
-    const editorCounterLine = countLines(e.target);
-
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (editorCounterLine >= 24) return;
+      const brCount = [...e.target.querySelectorAll('br')].length;
+      if (brCount >= 24) return;
       document.execCommand('insertLineBreak');
     }
   };
