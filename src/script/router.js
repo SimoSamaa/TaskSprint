@@ -27,10 +27,6 @@ async function loadScriptPages(path) {
 }
 
 function route(event) {
-  document.querySelectorAll('.task-link').forEach((ele) => {
-    window.open(ele.href, '_blank');
-  });
-
   event = event || window.event;
   event.preventDefault();
   window.history.pushState({}, '', event.target.href);
@@ -102,16 +98,6 @@ async function handleLocation() {
   } catch (err) {
     console.error('Failed to load route:', err);
   }
-
-  targetCurrentLink();
-}
-
-function targetCurrentLink() {
-  const links = document.querySelectorAll('a');
-  links.forEach((link) => {
-    link.removeEventListener('click', route);
-    link.addEventListener('click', route);
-  });
 }
 
 export const router = (path) => {

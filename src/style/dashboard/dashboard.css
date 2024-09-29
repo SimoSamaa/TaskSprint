@@ -137,12 +137,9 @@
   }
 
   .dashboard-title-page {
-    position: sticky;
-    top: 1rem;
     font-size: 34px;
     padding-bottom: 1rem;
     padding: 0 1rem 1rem;
-    z-index: 1000;
   }
 }
 

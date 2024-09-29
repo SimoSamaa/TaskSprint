@@ -100,14 +100,18 @@
   margin-top: 1rem;
   display: flex;
   gap: 2rem;
-  background-color: red;
+  overflow: auto;
+  min-width: 100%;
+  max-width: 300px;
+  padding-bottom: 1rem;
 
   > * {
     background-color: var(--clr-white);
     box-shadow: var(--shadow);
     border-radius: .5rem;
     height: fit-content;
-    width: var(--tasks-width);
+    min-width: var(--tasks-width);
+    width: min-content;
     padding: 1rem;
     position: relative;
 

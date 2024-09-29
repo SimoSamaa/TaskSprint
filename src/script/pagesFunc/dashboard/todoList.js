@@ -178,20 +178,19 @@ export default function todoList() {
         </div>
       `;
 
-        ['todo', 'doing', 'done'].forEach((taskProgress, ind) => {
-          if (task.taskProgress === taskProgress) {
-            tasksDropZoon[ind]?.appendChild(taskEle);
-            setlucideICON();
-          }
-        });
-
-        displayNoTasksMess();
-
         const editBtn = taskEle.querySelector('.task-header button:first-child');
         const deleteBtn = taskEle.querySelector('.task-header button:last-child');
         const taskEditor = taskEle.children[1];
 
-        checkBtnShowAll(taskEditor, taskEle);
+        ['todo', 'doing', 'done'].forEach((taskProgress, ind) => {
+          if (task.taskProgress === taskProgress) {
+            tasksDropZoon[ind]?.appendChild(taskEle);
+            setlucideICON();
+            checkBtnShowAll(taskEditor, taskEle);
+          }
+        });
+
+        displayNoTasksMess();
 
         deleteBtn.addEventListener('click', (e) => deleteTask(e, task));
         editBtn.addEventListener('click', (e) => editTask(e, task));
@@ -290,6 +289,7 @@ export default function todoList() {
     const taskLi = e.target.closest('li');
     const taskContent = taskLi.querySelector('.content');
 
+    taskLi.draggable = false;
     taskContent.contentEditable = true;
     taskContent.focus();
     taskContent.classList.add('show-all');

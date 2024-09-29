@@ -60,7 +60,7 @@ function helpers() {
 
     textContent = textContent.replace(linkRegex, (match) => {
       const link = match.length > 24 ? match.slice(0, 24) + '...' : match;
-      return `<a href="${match}" title='${match}' target='_blank' class="task-link">${link}</a>`;
+      return `<a href="${match}" draggable='false' title='${match}' target='_blank' class="task-link">${link}</a>`;
     });
 
     return textContent.replace(/\n/g, '<br />');
