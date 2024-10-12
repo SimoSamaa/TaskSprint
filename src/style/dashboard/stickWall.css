@@ -60,6 +60,7 @@
   }
 
   .editor {
+    overflow-wrap: anywhere;
     height: 100%;
     padding: 1rem;
     outline: none;

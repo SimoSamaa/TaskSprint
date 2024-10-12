@@ -147,6 +147,14 @@ export default function todoList() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 
+  function tasksProgressCounterHandler() {
+    const tasksProgressCounter = document.querySelectorAll('.task-progress_counter');
+    tasksDropZoon.forEach((dropZone, ind) => {
+      const taskCounter = tasks.filter((task) => task.taskProgress === dropZone.classList.item(0)).length;
+      tasksProgressCounter[ind].textContent = taskCounter;
+    });
+  }
+
   // DISPLAY TASKS
   function renderTasks(tasks) {
     tasksDropZoon.forEach((dropZone) => { dropZone.innerHTML = ''; });
@@ -191,6 +199,7 @@ export default function todoList() {
         });
 
         displayNoTasksMess();
+        tasksProgressCounterHandler();
 
         deleteBtn.addEventListener('click', (e) => deleteTask(e, task));
         editBtn.addEventListener('click', (e) => editTask(e, task));
@@ -240,6 +249,7 @@ export default function todoList() {
         taskEle.addEventListener('dragend', (e) => {
           e.target.classList.remove('is-dragging');
           updateTaskOrder();
+          tasksProgressCounterHandler();
         });
 
         // DROP TASK
@@ -282,6 +292,7 @@ export default function todoList() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     renderTasks(tasks);
     toggleTaskFilterState();
+    tasksProgressCounterHandler();
   }
 
   // EDIT TASK
@@ -314,6 +325,7 @@ export default function todoList() {
     const taskCounterLen = taskEle.children[2].firstElementChild;
 
     taskContent.contentEditable = false;
+    taskEle.draggable = true;
     taskCounterLen.innerHTML = '';
 
     if (taskContent.textContent.length === 0) {
@@ -358,5 +370,6 @@ export default function todoList() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
     toggleTaskFilterState();
     renderTasks(tasks);
+    tasksProgressCounterHandler();
   });
 }

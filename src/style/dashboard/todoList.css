@@ -120,6 +120,7 @@
       left: 50%;
       top: 58%;
       transform: translateX(-50%);
+      text-wrap: nowrap;
     }
 
     ul {
